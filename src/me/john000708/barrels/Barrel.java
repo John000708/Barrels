@@ -58,6 +58,9 @@ public class Barrel extends SlimefunItem {
                     menu.replaceExistingItem(4, new CustomItem(new ItemStack(Material.BARRIER), "&7Empty"));
                     menu.replaceExistingItem(22, new CustomItem(new ItemStack(Material.BARRIER), "&7Empty"));
                 }
+                
+                if (Barrels.displayItem) DisplayItem.updateDisplayItem(b, getCapacity());
+                
                 registerEvent(new ItemManipulationEvent() {
                     @Override
                     public void onEvent(int i, ItemStack itemStack, ItemStack itemStack1) {
@@ -81,7 +84,7 @@ public class Barrel extends SlimefunItem {
         registerBlockHandler(name, new SlimefunBlockHandler() {
             @Override
             public void onPlace(Player player, Block block, SlimefunItem slimefunItem) {
-                if (Barrels.displayItem) DisplayItem.updateDisplayItem(block, getCapacity());
+                // DONT DO ANYTHING - Inventory is not yet loaded
             }
 
             @Override
@@ -204,6 +207,8 @@ public class Barrel extends SlimefunItem {
 
     private void updateBarrel(Block b) {
         BlockMenu inventory = BlockStorage.getInventory(b);
+        
+        if (inventory == null) return;
 
         for (int slot : getInputSlots()) {
             if (inventory.getItemInSlot(slot) != null) {
