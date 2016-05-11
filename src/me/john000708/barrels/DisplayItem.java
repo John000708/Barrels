@@ -20,7 +20,6 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 public class DisplayItem {
 	
     public static void updateDisplayItem(Block b, int capacity) {
-    	removeDisplayItem(b);
     	ItemStack stack = new CustomItem(new ItemStack(Material.BARRIER), 1);
     	String nametag = "§cEmpty";
     	
@@ -31,11 +30,17 @@ public class DisplayItem {
             nametag = org.bukkit.ChatColor.translateAlternateColorCodes('&', "&9" + storedItems + "x &8(&e" + Math.round((float) storedItems / (float) capacity * 100.0F) + "%&8)");
         }
     	
-        Item entity = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), new CustomItem(stack, "§6§lB4R3L - §eITEM" + System.nanoTime()));
+        Item entity = getEntity(b);
+        if (entity == null) {
+        	entity = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), new CustomItem(stack, "§6§lB4R3L - §eITEM" + System.nanoTime()));
+        	entity.setVelocity(new Vector(0, 0.1, 0));
+            entity.setMetadata("no_pickup", new FixedMetadataValue(SlimefunStartup.instance, "barrel"));
+            entity.setCustomNameVisible(true);
+        }
+        else {
+        	entity.setItemStack(new CustomItem(stack, "§6§lB4R3L - §eITEM" + System.nanoTime()));
+        }
         
-        entity.setVelocity(new Vector(0, 0.1, 0));
-        entity.setMetadata("no_pickup", new FixedMetadataValue(SlimefunStartup.instance, "barrel"));
-        entity.setCustomNameVisible(true);
         entity.setCustomName(nametag);
     }
 
@@ -46,5 +51,15 @@ public class DisplayItem {
                     n.remove();
             }
         }
+    }
+    
+    private static Item getEntity(Block b) {
+    	for (Entity n : b.getChunk().getEntities()) {
+            if (n instanceof Item) {
+                if (b.getLocation().add(0.5, 1.2, 0.5).distanceSquared(n.getLocation()) < 1D && ((Item) n).getItemStack().hasItemMeta() && ((Item) n).getItemStack().getItemMeta().getDisplayName().startsWith("§6§lB4R3L - §eITEM"))
+                return (Item) n;
+            }
+        }
+    	return null;
     }
 }
