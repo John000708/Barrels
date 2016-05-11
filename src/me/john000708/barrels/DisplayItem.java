@@ -24,7 +24,7 @@ public class DisplayItem {
     	String nametag = "§cEmpty";
     	
     	BlockMenu menu = BlockStorage.getInventory(b);
-    	if (menu.getItemInSlot(22).getType() != Material.BARRIER) {
+    	if (BlockStorage.getBlockInfo(b, "storedItems") != null) {
             int storedItems = Integer.valueOf(BlockStorage.getBlockInfo(b, "storedItems"));
             stack = menu.getItemInSlot(22).clone();
             nametag = org.bukkit.ChatColor.translateAlternateColorCodes('&', "&9" + storedItems + "x &8(&e" + Math.round((float) storedItems / (float) capacity * 100.0F) + "%&8)");
