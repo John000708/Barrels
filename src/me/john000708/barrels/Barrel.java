@@ -98,7 +98,7 @@ public class Barrel extends SlimefunItem {
 
                 List<String> lore = meta.getLore();
                 for (int i = 0; i <= lore.size() - 1; i++) {
-                    if (lore.get(i).equals("ยงbยงaยงrยงrยงeยงl")) {
+                    if (lore.get(i).equals("งbงaงrงrงeงl")) {
                         lore.remove(i);
                         meta.setLore(lore);
                         item.setItemMeta(meta);
@@ -118,7 +118,7 @@ public class Barrel extends SlimefunItem {
         });
     }
 
-    @Override
+	@Override
     public void register(boolean slimefun) {
         addItemHandler(new BlockTicker() {
             @Override
@@ -233,7 +233,7 @@ public class Barrel extends SlimefunItem {
                 } else if (inventory.getItemInSlot(22).getType() == Material.BARRIER) {
                     ItemStack stack = input.clone();
                     List<String> lore = (stack.hasItemMeta() && stack.getItemMeta().hasLore()) ? stack.getItemMeta().getLore() : new ArrayList<String>();
-                    lore.add("ยงbยงaยงrยงrยงeยงl");
+                    lore.add("งbงaงrงrงeงl");
                     ItemMeta meta = stack.getItemMeta();
                     meta.setLore(lore);
                     stack.setItemMeta(meta);
@@ -285,7 +285,7 @@ public class Barrel extends SlimefunItem {
         List<String> lore = meta.getLore();
 
         for (int i = 0; i <= lore.size() - 1; i++) {
-            if (lore.get(i).equals("ยงbยงaยงrยงrยงeยงl")) {
+            if (lore.get(i).equals("งbงaงrงrงeงl")) {
                 lore.remove(i);
                 break;
             }
@@ -378,7 +378,7 @@ public class Barrel extends SlimefunItem {
 
         List<String> lore = meta.getLore();
         for (int i = 0; i <= lore.size() - 1; i++) {
-            if (lore.get(i).equals("ยงbยงaยงrยงrยงeยงl")) {
+            if (lore.get(i).equals("งbงaงrงrงeงl")) {
                 lore.remove(i);
                 meta.setLore(lore);
                 itemStack2.setItemMeta(meta);
@@ -393,7 +393,7 @@ public class Barrel extends SlimefunItem {
         int size = BlockStorage.getInventory(b).toInventory().getSize();
         Inventory inv = Bukkit.createInventory(null, size);
         for (int i = 0; i < size; i++) {
-            inv.setItem(i, new CustomItem(Material.COMMAND, " ยง4ALL YOUR PLACEHOLDERS ARE BELONG TO US", 0));
+            inv.setItem(i, new CustomItem(Material.COMMAND, " ง4ALL YOUR PLACEHOLDERS ARE BELONG TO US", 0));
         }
         for (int slot : getOutputSlots()) {
             inv.setItem(slot, BlockStorage.getInventory(b).getItemInSlot(slot));
