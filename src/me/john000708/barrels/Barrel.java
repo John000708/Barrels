@@ -109,9 +109,18 @@ public class Barrel extends SlimefunItem {
                     }
                 }
 
-                for (int i = 1; i <= storedAmount; i++) {
-                    block.getWorld().dropItem(block.getLocation(), item);
+                while (storedAmount > 0) {
+                	int amount = item.getMaxStackSize();
+                	if (storedAmount > amount) {
+                		storedAmount -= amount;
+                	}
+                	else {
+                		amount = storedAmount;
+                		storedAmount = 0;
+                	}
+                    block.getWorld().dropItem(block.getLocation(), new CustomItem(item, amount));
                 }
+                
                 if (inv.getItemInSlot(getInputSlots()[0]) != null)
                     block.getWorld().dropItem(block.getLocation(), inv.getItemInSlot(getInputSlots()[0]));
                 if (inv.getItemInSlot(getOutputSlots()[0]) != null)

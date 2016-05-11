@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Created by John on 06.05.2016.
  */
 public class Barrels extends JavaPlugin {
+	
     public static boolean displayItem;
     public static JavaPlugin plugin;
 
