@@ -146,6 +146,10 @@ public class Barrel extends SlimefunItem {
             @Override
             public void tick(Block block, SlimefunItem slimefunItem, Config config) {
             	updateBarrel(block);
+            	
+            	if (Barrels.displayItem) {
+                    DisplayItem.updateDisplayItem(block, getCapacity());
+                }
             }
         });
 
@@ -215,17 +219,9 @@ public class Barrel extends SlimefunItem {
                 ItemStack input = inventory.getItemInSlot(slot);
 
                 if (isSimilar(input, inventory.getItemInSlot(22))) {
-                    if (BlockStorage.getBlockInfo(b, "storedItems") == null) {
-                    	if (Barrels.displayItem) {
-                            DisplayItem.updateDisplayItem(b, getCapacity());
-                        }
-                    	return;
-                    }
-
                     int storedAmount = Integer.valueOf(BlockStorage.getBlockInfo(b, "storedItems"));
 
                     if (storedAmount != getCapacity()) {
-
                         if (storedAmount + input.getAmount() > getCapacity()) {
                             BlockStorage.addBlockInfo(b, "storedItems", String.valueOf(storedAmount + (getCapacity() - storedAmount)));
                             inventory.replaceExistingItem(slot, InvUtils.decreaseItem(inventory.getItemInSlot(slot), getCapacity() - storedAmount));
@@ -236,7 +232,6 @@ public class Barrel extends SlimefunItem {
                             inventory.replaceExistingItem(slot, new ItemStack(Material.AIR));
                         }
                     }
-
                 } 
                 else if (inventory.getItemInSlot(22).getType() == Material.BARRIER) {
                     ItemStack stack = input.clone();
@@ -255,31 +250,14 @@ public class Barrel extends SlimefunItem {
             }
         }
 
-        if (BlockStorage.getBlockInfo(b, "storedItems") == null) {
-        	if (Barrels.displayItem) {
-                DisplayItem.updateDisplayItem(b, getCapacity());
-            }
-        	return;
-        }
+        if (BlockStorage.getBlockInfo(b, "storedItems") == null) return;
 
         int storedAmount = Integer.valueOf(BlockStorage.getBlockInfo(b, "storedItems"));
-
-        if (storedAmount < 0) {
-        	if (Barrels.displayItem) {
-                DisplayItem.updateDisplayItem(b, getCapacity());
-            }
-        	return;
-        }
 
         ItemStack outputItem = inventory.getItemInSlot(22).clone();
 
         if (inventory.getItemInSlot(getOutputSlots()[0]) != null) {
-            if (!isSimilar(inventory.getItemInSlot(getOutputSlots()[0]), outputItem)) {
-            	if (Barrels.displayItem) {
-                    DisplayItem.updateDisplayItem(b, getCapacity());
-                }
-            	return;
-            }
+            if (!isSimilar(inventory.getItemInSlot(getOutputSlots()[0]), outputItem)) return;
 
             int requestedAmount = outputItem.getMaxStackSize() - inventory.getItemInSlot(getOutputSlots()[0]).getAmount();
 
@@ -298,12 +276,7 @@ public class Barrel extends SlimefunItem {
 
         ItemMeta meta = outputItem.getItemMeta();
 
-        if (meta == null) {
-        	if (Barrels.displayItem) {
-                DisplayItem.updateDisplayItem(b, getCapacity());
-            }
-        	return;
-        }
+        if (meta == null) return;
 
         List<String> lore = meta.getLore();
 
@@ -316,12 +289,7 @@ public class Barrel extends SlimefunItem {
         meta.setLore(lore);
         outputItem.setItemMeta(meta);
 
-        if (!fits(b, new ItemStack[]{outputItem})) {
-        	if (Barrels.displayItem) {
-                DisplayItem.updateDisplayItem(b, getCapacity());
-            }
-        	return;
-        }
+        if (!fits(b, new ItemStack[]{outputItem})) return;
 
         BlockStorage.addBlockInfo(b, "storedItems", String.valueOf(storedAmount - outputItem.getAmount()));
 
@@ -332,15 +300,9 @@ public class Barrel extends SlimefunItem {
             inventory.replaceExistingItem(4, new CustomItem(new ItemStack(Material.BARRIER), "&7Empty"));
             inventory.replaceExistingItem(22, new CustomItem(new ItemStack(Material.BARRIER), "&7Empty"));
 
-            if (Barrels.displayItem) {
-                DisplayItem.updateDisplayItem(b, getCapacity());
-            }
             return;
         }
-
-        if (Barrels.displayItem) {
-            DisplayItem.updateDisplayItem(b, getCapacity());
-        }
+        
         inventory.replaceExistingItem(4, getCapacityItem(b));
     }
 
