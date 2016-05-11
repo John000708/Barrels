@@ -1,0 +1,6 @@
+main: me.john000708.barrels.Barrels
+name: Barrels
+description: A better way of storing items.
+version: 1.2.0
+author: John000708
+depend: [Slimefun]
