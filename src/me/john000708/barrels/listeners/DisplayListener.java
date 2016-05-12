@@ -1,5 +1,6 @@
-package me.john000708.barrels;
+package me.john000708.barrels.listeners;
 
+import me.john000708.barrels.Barrels;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,14 +17,14 @@ public class DisplayListener implements Listener {
 
     @EventHandler
     public void onPickpup(PlayerPickupItemEvent e) {
-        if (!e.getItem().hasMetadata("no_pickup") && e.getItem().getItemStack().hasItemMeta() && e.getItem().getItemStack().getItemMeta().hasDisplayName() && e.getItem().getItemStack().getItemMeta().getDisplayName().startsWith("§6§lB4R3L - §eITEM")) {
+        if (!e.getItem().hasMetadata("no_pickup") && e.getItem().getItemStack().hasItemMeta() && e.getItem().getItemStack().getItemMeta().hasDisplayName() && e.getItem().getItemStack().getItemMeta().getDisplayName().startsWith("Â§6Â§lB4R3L - Â§eITEM")) {
         	e.getItem().remove();
         }
     }
 
     @EventHandler
     public void onInventoryPickup(InventoryPickupItemEvent e) {
-        if (!e.getItem().hasMetadata("no_pickup") && e.getItem().getItemStack().hasItemMeta() && e.getItem().getItemStack().getItemMeta().hasDisplayName() && e.getItem().getItemStack().getItemMeta().getDisplayName().startsWith("§6§lB4R3L - §eITEM")) {
+        if (!e.getItem().hasMetadata("no_pickup") && e.getItem().getItemStack().hasItemMeta() && e.getItem().getItemStack().getItemMeta().hasDisplayName() && e.getItem().getItemStack().getItemMeta().getDisplayName().startsWith("Â§6Â§lB4R3L - Â§eITEM")) {
             e.getItem().remove();
         }
     }
