@@ -1,7 +1,6 @@
 package me.john000708.barrels;
 
 import me.john000708.barrels.listeners.DisplayListener;
-import me.john000708.barrels.listeners.ModulesListener;
 import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.events.ItemUseEvent;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
@@ -37,7 +36,6 @@ public class Barrels extends JavaPlugin {
         utils.setupConfig();
 
         new DisplayListener();
-        new ModulesListener();
         displayItem = getConfig().getBoolean("options.displayItem");
         //utils.setupUpdater(, getFile());
         setup();
@@ -130,9 +128,11 @@ public class Barrels extends JavaPlugin {
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, STRUCT_UPGRADE_1, true)) return false;
-                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_")) {
+                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getBlockInfo(itemUseEvent.getClickedBlock(), "STRUCT_1") == null) {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
-                    BlockStorage.addBlockInfo(clickedBlock, "newCapacity", "8192");
+
+                    BlockStorage.addBlockInfo(clickedBlock, "STRUCT_1", "true");
+                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getBlockInfo(clickedBlock, "capacity")) + 8192));
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
                 }
@@ -144,9 +144,11 @@ public class Barrels extends JavaPlugin {
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, STRUCT_UPGRADE_2, true)) return false;
-                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_")) {
+                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getBlockInfo(itemUseEvent.getClickedBlock(), "STRUCT_2") == null) {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
-                    BlockStorage.addBlockInfo(clickedBlock, "newCapacity", "16384");
+
+                    BlockStorage.addBlockInfo(clickedBlock, "STRUCT_2", "true");
+                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getBlockInfo(clickedBlock, "capacity")) + 16384));
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
                 }
@@ -158,9 +160,11 @@ public class Barrels extends JavaPlugin {
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, STRUCT_UPGRADE_3, true)) return false;
-                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_")) {
+                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getBlockInfo(itemUseEvent.getClickedBlock(), "STRUCT_3") == null) {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
-                    BlockStorage.addBlockInfo(clickedBlock, "newCapacity", "32768");
+
+                    BlockStorage.addBlockInfo(clickedBlock, "STRUCT_3", "true");
+                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getBlockInfo(clickedBlock, "capacity")) + 32768));
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
                 }

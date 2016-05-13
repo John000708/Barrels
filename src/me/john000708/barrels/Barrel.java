@@ -59,7 +59,7 @@ public class Barrel extends SlimefunItem {
                     menu.replaceExistingItem(22, new CustomItem(new ItemStack(Material.BARRIER), "&7Empty"));
                 }
 
-                if (Barrels.displayItem) DisplayItem.updateDisplayItem(b, getCapacity());
+                if (Barrels.displayItem) DisplayItem.updateDisplayItem(b, getCapacity(b));
 
                 registerEvent(new ItemManipulationEvent() {
                     @Override
@@ -89,6 +89,10 @@ public class Barrel extends SlimefunItem {
 
             @Override
             public boolean onBreak(Player player, Block block, SlimefunItem slimefunItem, UnregisterReason unregisterReason) {
+                if (unregisterReason == UnregisterReason.EXPLODE) {
+                    if (BlockStorage.getBlockInfo(block, "explosion") != null) return false;
+                }
+
                 DisplayItem.removeDisplayItem(block);
 
                 BlockMenu inv = BlockStorage.getInventory(block);
@@ -147,11 +151,7 @@ public class Barrel extends SlimefunItem {
                 updateBarrel(block);
 
                 if (Barrels.displayItem) {
-                    DisplayItem.updateDisplayItem(block, getCapacity());
-                }
-
-                if(BlockStorage.getBlockInfo(block, "newCapacity") != null){
-                    capacity = Integer.valueOf(BlockStorage.getBlockInfo(block, "newCapacity"));
+                    DisplayItem.updateDisplayItem(block, getCapacity(block));
                 }
             }
         });
@@ -163,8 +163,12 @@ public class Barrel extends SlimefunItem {
         return "&6Barrel";
     }
 
-    public int getCapacity() {
-        return this.capacity;
+    public int getCapacity(Block b) {
+        if (BlockStorage.getBlockInfo(b, "capacity") == null) {
+            BlockStorage.addBlockInfo(b, "capacity", String.valueOf(this.capacity));
+        }
+
+        return Integer.valueOf(BlockStorage.getBlockInfo(b, "capacity"));
     }
 
     public int[] getInputSlots() {
@@ -180,7 +184,7 @@ public class Barrel extends SlimefunItem {
 
         int storedItems = Integer.valueOf(BlockStorage.getBlockInfo(b, "storedItems"));
 
-        float percentage = Math.round((float) storedItems / (float) getCapacity() * 100.0F);
+        float percentage = Math.round((float) storedItems / (float) getCapacity(b) * 100.0F);
 
         bar.append("&8[");
 
@@ -209,7 +213,7 @@ public class Barrel extends SlimefunItem {
 
         bar.append("&8] &7- " + percentage + "%");
 
-        return new CustomItem(new ItemStack(Material.CAULDRON_ITEM), "&7" + BlockStorage.getBlockInfo(b, "storedItems") + "/" + getCapacity(), ChatColor.translateAlternateColorCodes('&', bar.toString()));
+        return new CustomItem(new ItemStack(Material.CAULDRON_ITEM), "&7" + BlockStorage.getBlockInfo(b, "storedItems") + "/" + getCapacity(b), ChatColor.translateAlternateColorCodes('&', bar.toString()));
     }
 
     private void updateBarrel(Block b) {
@@ -222,12 +226,15 @@ public class Barrel extends SlimefunItem {
                 ItemStack input = inventory.getItemInSlot(slot);
 
                 if (isSimilar(input, inventory.getItemInSlot(22))) {
+                    if (BlockStorage.getBlockInfo(b, "storedItems") == null) {
+                        BlockStorage.addBlockInfo(b, "storedItems", "1");
+                    }
                     int storedAmount = Integer.valueOf(BlockStorage.getBlockInfo(b, "storedItems"));
 
-                    if (storedAmount != getCapacity() && storedAmount < getCapacity()) {
-                        if (storedAmount + input.getAmount() > getCapacity()) {
-                            BlockStorage.addBlockInfo(b, "storedItems", String.valueOf(storedAmount + (getCapacity() - storedAmount)));
-                            inventory.replaceExistingItem(slot, InvUtils.decreaseItem(inventory.getItemInSlot(slot), getCapacity() - storedAmount));
+                    if (storedAmount != getCapacity(b) && storedAmount < getCapacity(b)) {
+                        if (storedAmount + input.getAmount() > getCapacity(b)) {
+                            BlockStorage.addBlockInfo(b, "storedItems", String.valueOf(storedAmount + (getCapacity(b) - storedAmount)));
+                            inventory.replaceExistingItem(slot, InvUtils.decreaseItem(inventory.getItemInSlot(slot), getCapacity(b) - storedAmount));
                             inventory.replaceExistingItem(4, getCapacityItem(b));
                         } else {
                             BlockStorage.addBlockInfo(b, "storedItems", String.valueOf(storedAmount + input.getAmount()));
