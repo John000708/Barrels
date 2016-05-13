@@ -62,7 +62,9 @@ public class Barrels extends JavaPlugin {
 
         //Upgrades
         final ItemStack EXPLOSION_MODULE = new CustomItem(new ItemStack(Material.ITEM_FRAME), "&9Explosion Protection", "&fPrevents the barrel from", "&fgetting destroyed.");
-
+        final ItemStack STRUCT_UPGRADE_1 = new CustomItem(new ItemStack(Material.ITEM_FRAME), "&9Structural Upgrade &7- &eI", "&bSmall &8\u21E8 &bMedium");
+        final ItemStack STRUCT_UPGRADE_2 = new CustomItem(new ItemStack(Material.ITEM_FRAME), "&9Structural Upgrade &7- &eII", "&bMedium &8\u21E8 &bBig");
+        final ItemStack STRUCT_UPGRADE_3 = new CustomItem(new ItemStack(Material.ITEM_FRAME), "&9Structural Upgrade &7- &eIII", "&bBig &8\u21E8 &bLarge");
         new Barrel(barrelCat, SMALL_BARREL, "BARREL_SMALL", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{new ItemStack(Material.WOOD_STEP), SlimefunItems.PLASTIC_SHEET, new ItemStack(Material.WOOD_STEP), new ItemStack(Material.WOOD_STEP), new ItemStack(Material.CHEST), new ItemStack(Material.WOOD_STEP), new ItemStack(Material.WOOD_STEP), SlimefunItems.GILDED_IRON, new ItemStack(Material.WOOD_STEP)}, 4096) {
 
             @Override
@@ -116,9 +118,51 @@ public class Barrels extends JavaPlugin {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
                     if (BlockStorage.getBlockInfo(clickedBlock, "explosion") == null) {
                         BlockStorage.addBlockInfo(clickedBlock, "explosion", "true");
-                        InvUtils.decreaseItem(itemStack, 1);
+                        player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
                         player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
                     }
+                }
+                return false;
+            }
+        });
+
+        new SlimefunItem(barrelCat, STRUCT_UPGRADE_1, "STRUCT_UPGRADE_1", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, MEDIUM_BARREL, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT}).register(false, new ItemInteractionHandler() {
+            @Override
+            public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
+                if (!SlimefunManager.isItemSimiliar(itemStack, STRUCT_UPGRADE_1, true)) return false;
+                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_")) {
+                    Block clickedBlock = itemUseEvent.getClickedBlock();
+                    BlockStorage.addBlockInfo(clickedBlock, "newCapacity", "8192");
+                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                    player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
+                }
+                return false;
+            }
+        });
+
+        new SlimefunItem(barrelCat, STRUCT_UPGRADE_2, "STRUCT_UPGRADE_2", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, BIG_BARREL, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT}).register(false, new ItemInteractionHandler() {
+            @Override
+            public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
+                if (!SlimefunManager.isItemSimiliar(itemStack, STRUCT_UPGRADE_2, true)) return false;
+                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_")) {
+                    Block clickedBlock = itemUseEvent.getClickedBlock();
+                    BlockStorage.addBlockInfo(clickedBlock, "newCapacity", "16384");
+                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                    player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
+                }
+                return false;
+            }
+        });
+
+        new SlimefunItem(barrelCat, STRUCT_UPGRADE_3, "STRUCT_UPGRADE_3", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, LARGE_BARREL, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT}).register(false, new ItemInteractionHandler() {
+            @Override
+            public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
+                if (!SlimefunManager.isItemSimiliar(itemStack, STRUCT_UPGRADE_3, true)) return false;
+                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_")) {
+                    Block clickedBlock = itemUseEvent.getClickedBlock();
+                    BlockStorage.addBlockInfo(clickedBlock, "newCapacity", "32768");
+                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                    player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
                 }
                 return false;
             }

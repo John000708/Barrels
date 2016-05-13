@@ -149,6 +149,10 @@ public class Barrel extends SlimefunItem {
                 if (Barrels.displayItem) {
                     DisplayItem.updateDisplayItem(block, getCapacity());
                 }
+
+                if(BlockStorage.getBlockInfo(block, "newCapacity") != null){
+                    capacity = Integer.valueOf(BlockStorage.getBlockInfo(block, "newCapacity"));
+                }
             }
         });
 
@@ -220,7 +224,7 @@ public class Barrel extends SlimefunItem {
                 if (isSimilar(input, inventory.getItemInSlot(22))) {
                     int storedAmount = Integer.valueOf(BlockStorage.getBlockInfo(b, "storedItems"));
 
-                    if (storedAmount != getCapacity()) {
+                    if (storedAmount != getCapacity() && storedAmount < getCapacity()) {
                         if (storedAmount + input.getAmount() > getCapacity()) {
                             BlockStorage.addBlockInfo(b, "storedItems", String.valueOf(storedAmount + (getCapacity() - storedAmount)));
                             inventory.replaceExistingItem(slot, InvUtils.decreaseItem(inventory.getItemInSlot(slot), getCapacity() - storedAmount));
