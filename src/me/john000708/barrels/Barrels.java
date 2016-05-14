@@ -1,6 +1,7 @@
 package me.john000708.barrels;
 
 import me.john000708.barrels.listeners.DisplayListener;
+import me.john000708.barrels.listeners.WorldListener;
 import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.events.ItemUseEvent;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
@@ -36,6 +37,8 @@ public class Barrels extends JavaPlugin {
         utils.setupConfig();
 
         new DisplayListener();
+        new WorldListener();
+
         displayItem = getConfig().getBoolean("options.displayItem");
         //utils.setupUpdater(, getFile());
         setup();
