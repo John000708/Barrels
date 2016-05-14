@@ -21,7 +21,7 @@ public class DisplayItem {
 	
     public static void updateDisplayItem(Block b, int capacity) {
     	ItemStack stack = new CustomItem(new ItemStack(Material.BARRIER), 1);
-    	String nametag = "Â§cEmpty";
+    	String nametag = "§cEmpty";
     	
     	BlockMenu menu = BlockStorage.getInventory(b);
     	if (BlockStorage.getBlockInfo(b, "storedItems") != null) {
@@ -32,13 +32,13 @@ public class DisplayItem {
     	
         Item entity = getEntity(b);
         if (entity == null) {
-        	entity = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), new CustomItem(stack, "Â§6Â§lB4R3L - Â§eITEM" + System.nanoTime()));
+        	entity = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), new CustomItem(stack, "§6§lB4R3L - §eITEM" + System.nanoTime()));
         	entity.setVelocity(new Vector(0, 0.1, 0));
             entity.setMetadata("no_pickup", new FixedMetadataValue(SlimefunStartup.instance, "barrel"));
             entity.setCustomNameVisible(true);
         }
         else {
-        	entity.setItemStack(new CustomItem(stack, "Â§6Â§lB4R3L - Â§eITEM" + System.nanoTime()));
+        	entity.setItemStack(new CustomItem(stack, "§6§lB4R3L - §eITEM" + System.nanoTime()));
         }
         
         entity.setCustomName(nametag);
@@ -47,7 +47,7 @@ public class DisplayItem {
     public static void removeDisplayItem(Block b) {
         for (Entity n : b.getChunk().getEntities()) {
             if (n instanceof Item) {
-                if (b.getLocation().add(0.5, 1.2, 0.5).distanceSquared(n.getLocation()) < 1D && ((Item) n).getItemStack().hasItemMeta() && ((Item) n).getItemStack().getItemMeta().getDisplayName().startsWith("Â§6Â§lB4R3L - Â§eITEM"))
+                if (b.getLocation().add(0.5, 1.2, 0.5).distanceSquared(n.getLocation()) < 1D && ((Item) n).getItemStack().hasItemMeta() && ((Item) n).getItemStack().getItemMeta().getDisplayName().startsWith("§6§lB4R3L - §eITEM"))
                     n.remove();
             }
         }
@@ -56,7 +56,7 @@ public class DisplayItem {
     private static Item getEntity(Block b) {
     	for (Entity n : b.getChunk().getEntities()) {
             if (n instanceof Item) {
-                if (b.getLocation().add(0.5, 1.2, 0.5).distanceSquared(n.getLocation()) < 1D && ((Item) n).getItemStack().hasItemMeta() && ((Item) n).getItemStack().getItemMeta().getDisplayName().startsWith("Â§6Â§lB4R3L - Â§eITEM"))
+                if (b.getLocation().add(0.5, 1.2, 0.5).distanceSquared(n.getLocation()) < 1D && ((Item) n).getItemStack().hasItemMeta() && ((Item) n).getItemStack().getItemMeta().getDisplayName().startsWith("§6§lB4R3L - §eITEM"))
                 return (Item) n;
             }
         }
