@@ -34,6 +34,7 @@ import java.util.List;
  * Created by John on 06.05.2016.
  */
 public class Barrel extends SlimefunItem {
+	
     private int[] border1 = {0, 1, 2, 9, 11, 18, 19, 20};
     private int[] border2 = {3, 5, 12, 13, 14, 21, 23};
     private int[] border3 = {6, 7, 8, 15, 17, 24, 25, 26};
@@ -117,7 +118,8 @@ public class Barrel extends SlimefunItem {
                     int amount = item.getMaxStackSize();
                     if (storedAmount > amount) {
                         storedAmount -= amount;
-                    } else {
+                    } 
+                    else {
                         amount = storedAmount;
                         storedAmount = 0;
                     }
@@ -128,6 +130,7 @@ public class Barrel extends SlimefunItem {
                     block.getWorld().dropItem(block.getLocation(), inv.getItemInSlot(getInputSlots()[0]));
                 if (inv.getItemInSlot(getOutputSlots()[0]) != null)
                     block.getWorld().dropItem(block.getLocation(), inv.getItemInSlot(getOutputSlots()[0]));
+                
                 return true;
             }
         });

@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockBurnEvent;
  * Created by John on 14.05.2016.
  */
 public class WorldListener implements Listener {
+	
     public WorldListener() {
         Bukkit.getPluginManager().registerEvents(this, Barrels.plugin);
     }
@@ -19,9 +20,7 @@ public class WorldListener implements Listener {
     public void onFireSpread(BlockBurnEvent e) {
         if (e.getBlock() == null) return;
 
-        if (BlockStorage.hasBlockInfo(e.getBlock()) && BlockStorage.checkID(e.getBlock()).startsWith("BARREL_"))
+        if (BlockStorage.checkID(e.getBlock()).startsWith("BARREL_"))
             e.setCancelled(true);
-
-
     }
 }

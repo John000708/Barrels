@@ -112,7 +112,8 @@ public class Barrels extends JavaPlugin {
         }.register();
 
         new SlimefunItem(barrelCat, EXPLOSION_MODULE, "EXPLOSION_MODULE", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{new ItemStack(Material.TNT), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.TNT), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.TNT), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.TNT)}).register(false, new ItemInteractionHandler() {
-            @Override
+            
+        	@Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, EXPLOSION_MODULE, true)) return false;
                 if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_")) {
@@ -125,10 +126,12 @@ public class Barrels extends JavaPlugin {
                 }
                 return false;
             }
+        	
         });
 
         new SlimefunItem(barrelCat, STRUCT_UPGRADE_1, "STRUCT_UPGRADE_1", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, MEDIUM_BARREL, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT}).register(false, new ItemInteractionHandler() {
-            @Override
+            
+        	@Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, STRUCT_UPGRADE_1, true)) return false;
                 if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getBlockInfo(itemUseEvent.getClickedBlock(), "STRUCT_1") == null) {
@@ -141,10 +144,12 @@ public class Barrels extends JavaPlugin {
                 }
                 return false;
             }
+        	
         });
 
         new SlimefunItem(barrelCat, STRUCT_UPGRADE_2, "STRUCT_UPGRADE_2", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, BIG_BARREL, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT}).register(false, new ItemInteractionHandler() {
-            @Override
+            
+        	@Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, STRUCT_UPGRADE_2, true)) return false;
                 if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getBlockInfo(itemUseEvent.getClickedBlock(), "STRUCT_2") == null) {
@@ -157,10 +162,12 @@ public class Barrels extends JavaPlugin {
                 }
                 return false;
             }
+        	
         });
 
         new SlimefunItem(barrelCat, STRUCT_UPGRADE_3, "STRUCT_UPGRADE_3", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, LARGE_BARREL, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT}).register(false, new ItemInteractionHandler() {
-            @Override
+            
+        	@Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, STRUCT_UPGRADE_3, true)) return false;
                 if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getBlockInfo(itemUseEvent.getClickedBlock(), "STRUCT_3") == null) {
@@ -173,6 +180,7 @@ public class Barrels extends JavaPlugin {
                 }
                 return false;
             }
+        	
         });
     }
 }

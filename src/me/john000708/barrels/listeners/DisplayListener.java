@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
  * Created by John on 10.05.2016.
  */
 public class DisplayListener implements Listener {
+	
     public DisplayListener() {
         Bukkit.getPluginManager().registerEvents(this, Barrels.plugin);
     }
@@ -18,6 +19,7 @@ public class DisplayListener implements Listener {
     @EventHandler
     public void onPickpup(PlayerPickupItemEvent e) {
         if (!e.getItem().hasMetadata("no_pickup") && e.getItem().getItemStack().hasItemMeta() && e.getItem().getItemStack().getItemMeta().hasDisplayName() && e.getItem().getItemStack().getItemMeta().getDisplayName().startsWith("§6§lB4R3L - §eITEM")) {
+        	e.setCancelled(true);
         	e.getItem().remove();
         }
     }
@@ -25,7 +27,8 @@ public class DisplayListener implements Listener {
     @EventHandler
     public void onInventoryPickup(InventoryPickupItemEvent e) {
         if (!e.getItem().hasMetadata("no_pickup") && e.getItem().getItemStack().hasItemMeta() && e.getItem().getItemStack().getItemMeta().hasDisplayName() && e.getItem().getItemStack().getItemMeta().getDisplayName().startsWith("§6§lB4R3L - §eITEM")) {
-            e.getItem().remove();
+        	e.setCancelled(true);
+        	e.getItem().remove();
         }
     }
 }
