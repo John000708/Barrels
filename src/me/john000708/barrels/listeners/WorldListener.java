@@ -20,7 +20,7 @@ public class WorldListener implements Listener {
     public void onFireSpread(BlockBurnEvent e) {
         if (e.getBlock() == null) return;
 
-        if (BlockStorage.checkID(e.getBlock()).startsWith("BARREL_"))
-            e.setCancelled(true);
+        String id = BlockStorage.checkID(e.getBlock());
+        if (id != null && id.startsWith("BARREL_")) e.setCancelled(true);
     }
 }
