@@ -57,8 +57,6 @@ public class Barrels extends JavaPlugin {
     private void setup() {
         Category barrelCat = new Category(new CustomItem(new ItemStack(Material.LOG), "&aBarrels", "", "&a> Click to open"));
 
-        barrelCat.register();
-
         ItemStack SMALL_BARREL = new CustomItem(new ItemStack(Material.LOG), "&9Barrel &7- &eSmall", "", "&8\u21E8 &7Capacity: 64 Stacks");
         ItemStack MEDIUM_BARREL = new CustomItem(new MaterialData(Material.LOG, (byte) 1), "&9Barrel &7- &eMedium", "", "&8\u21E8 &7Capacity: 128 Stacks");
         ItemStack BIG_BARREL = new CustomItem(new MaterialData(Material.LOG_2, (byte) 1), "&9Barrel &7- &eBig", "", "&8\u21E8 &7Capacity: 256 Stacks");
