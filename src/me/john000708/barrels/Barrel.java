@@ -1,6 +1,5 @@
 package me.john000708.barrels;
 
-import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
@@ -34,7 +33,7 @@ import java.util.List;
  * Created by John on 06.05.2016.
  */
 public class Barrel extends SlimefunItem {
-	
+
     private int[] border1 = {0, 1, 2, 9, 11, 18, 19, 20};
     private int[] border2 = {3, 5, 12, 13, 14, 21, 23};
     private int[] border3 = {6, 7, 8, 15, 17, 24, 25, 26};
@@ -72,7 +71,9 @@ public class Barrel extends SlimefunItem {
 
             @Override
             public boolean canOpen(Block b, Player p) {
-                return p.hasPermission("slimefun.inventory.bypass") || CSCoreLib.getLib().getProtectionManager().canAccessChest(p.getUniqueId(), b, true);
+                boolean protect = BlockStorage.getBlockInfo(b, "protected") == null || BlockStorage.getBlockInfo(b, "owner").equals(p.getUniqueId().toString())  || BlockStorage.getBlockInfo(b, "whitelist").contains(p.getUniqueId().toString());
+
+                return p.hasPermission("slimefun.inventory.bypass") || protect;
             }
 
             @Override
@@ -85,6 +86,8 @@ public class Barrel extends SlimefunItem {
         registerBlockHandler(name, new SlimefunBlockHandler() {
             @Override
             public void onPlace(Player player, Block block, SlimefunItem slimefunItem) {
+                BlockStorage.addBlockInfo(block, "owner", player.getUniqueId().toString());
+                BlockStorage.addBlockInfo(block, "whitelist", " ");
                 // DONT DO ANYTHING - Inventory is not yet loaded
             }
 
@@ -118,8 +121,7 @@ public class Barrel extends SlimefunItem {
                     int amount = item.getMaxStackSize();
                     if (storedAmount > amount) {
                         storedAmount -= amount;
-                    } 
-                    else {
+                    } else {
                         amount = storedAmount;
                         storedAmount = 0;
                     }
@@ -130,7 +132,7 @@ public class Barrel extends SlimefunItem {
                     block.getWorld().dropItem(block.getLocation(), inv.getItemInSlot(getInputSlots()[0]));
                 if (inv.getItemInSlot(getOutputSlots()[0]) != null)
                     block.getWorld().dropItem(block.getLocation(), inv.getItemInSlot(getOutputSlots()[0]));
-                
+
                 return true;
             }
         });
