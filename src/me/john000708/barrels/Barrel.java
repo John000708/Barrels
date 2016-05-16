@@ -71,7 +71,7 @@ public class Barrel extends SlimefunItem {
 
             @Override
             public boolean canOpen(Block b, Player p) {
-                boolean protect = BlockStorage.getBlockInfo(b, "protected") == null || BlockStorage.getBlockInfo(b, "owner").equals(p.getUniqueId().toString())  || BlockStorage.getBlockInfo(b, "whitelist").contains(p.getUniqueId().toString());
+                boolean protect = BlockStorage.getBlockInfo(b, "protected") == null || BlockStorage.getBlockInfo(b, "owner").equals(p.getUniqueId().toString()) || BlockStorage.getBlockInfo(b, "whitelist").contains(p.getUniqueId().toString());
 
                 return p.hasPermission("slimefun.inventory.bypass") || protect;
             }
@@ -96,6 +96,8 @@ public class Barrel extends SlimefunItem {
                 if (unregisterReason == UnregisterReason.EXPLODE) {
                     if (BlockStorage.getBlockInfo(block, "explosion") != null) return false;
                 }
+
+                if (!BlockStorage.getBlockInfo(block, "owner").equals(player.getUniqueId().toString())) return false;
 
                 DisplayItem.removeDisplayItem(block);
 

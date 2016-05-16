@@ -73,6 +73,7 @@ public class Barrels extends JavaPlugin {
         final ItemStack STRUCT_UPGRADE_1 = new CustomItem(new ItemStack(Material.ITEM_FRAME), "&9Structural Upgrade &7- &eI", "&bSmall &8\u21E8 &bMedium");
         final ItemStack STRUCT_UPGRADE_2 = new CustomItem(new ItemStack(Material.ITEM_FRAME), "&9Structural Upgrade &7- &eII", "&bMedium &8\u21E8 &bBig");
         final ItemStack STRUCT_UPGRADE_3 = new CustomItem(new ItemStack(Material.ITEM_FRAME), "&9Structural Upgrade &7- &eIII", "&bBig &8\u21E8 &bLarge");
+
         new Barrel(barrelCat, SMALL_BARREL, "BARREL_SMALL", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{new ItemStack(Material.WOOD_STEP), plastic ? SlimefunItems.PLASTIC_SHEET : new ItemStack(Material.CAULDRON_ITEM), new ItemStack(Material.WOOD_STEP), new ItemStack(Material.WOOD_STEP), new ItemStack(Material.CHEST), new ItemStack(Material.WOOD_STEP), new ItemStack(Material.WOOD_STEP), SlimefunItems.GILDED_IRON, new ItemStack(Material.WOOD_STEP)}, 4096) {
 
             @Override
