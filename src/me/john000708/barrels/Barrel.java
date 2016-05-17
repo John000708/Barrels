@@ -93,11 +93,12 @@ public class Barrel extends SlimefunItem {
 
             @Override
             public boolean onBreak(Player player, Block block, SlimefunItem slimefunItem, UnregisterReason unregisterReason) {
-                if (unregisterReason == UnregisterReason.EXPLODE) {
+                if (unregisterReason.equals(UnregisterReason.EXPLODE)) {
                     if (BlockStorage.getBlockInfo(block, "explosion") != null) return false;
                 }
-
-                if (!BlockStorage.getBlockInfo(block, "owner").equals(player.getUniqueId().toString())) return false;
+                else if (unregisterReason.equals(UnregisterReason.PLAYER_BREAK)) {
+                	if (!BlockStorage.getBlockInfo(block, "owner").equals(player.getUniqueId().toString())) return false;
+                }
 
                 DisplayItem.removeDisplayItem(block);
 
