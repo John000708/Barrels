@@ -78,7 +78,15 @@ public class Barrel extends SlimefunItem {
 
             @Override
             public int[] getSlotsAccessedByItemTransport(ItemTransportFlow itemTransportFlow) {
-                if (itemTransportFlow == ItemTransportFlow.INSERT) return getInputSlots();
+                return new int[0];
+            }
+            
+            @Override
+            public int[] getSlotsAccessedByItemTransport(BlockMenu menu, ItemTransportFlow flow, ItemStack item) {
+            	if (flow == ItemTransportFlow.INSERT) {
+            		if (BlockStorage.getBlockInfo(menu.getBlock(), "storedItems") != null) return isSimiliar(item, menu.getItemInSlot(22)) ? getInputSlots(): new int[0];
+            		else return getInputSlots();
+            	}
                 else return getOutputSlots();
             }
         };
@@ -233,7 +241,7 @@ public class Barrel extends SlimefunItem {
             if (inventory.getItemInSlot(slot) != null) {
                 ItemStack input = inventory.getItemInSlot(slot);
 
-                if (isSimilar(input, inventory.getItemInSlot(22))) {
+                if (isSimiliar(input, inventory.getItemInSlot(22))) {
                     if (BlockStorage.getBlockInfo(b, "storedItems") == null) {
                         BlockStorage.addBlockInfo(b, "storedItems", "1");
                     }
@@ -274,7 +282,7 @@ public class Barrel extends SlimefunItem {
         ItemStack outputItem = inventory.getItemInSlot(22).clone();
 
         if (inventory.getItemInSlot(getOutputSlots()[0]) != null) {
-            if (!isSimilar(inventory.getItemInSlot(getOutputSlots()[0]), outputItem)) return;
+            if (!isSimiliar(inventory.getItemInSlot(getOutputSlots()[0]), outputItem)) return;
 
             int requestedAmount = outputItem.getMaxStackSize() - inventory.getItemInSlot(getOutputSlots()[0]).getAmount();
 
@@ -367,7 +375,7 @@ public class Barrel extends SlimefunItem {
         });
     }
 
-    private boolean isSimilar(ItemStack i1, ItemStack i2) {
+    private boolean isSimiliar(ItemStack i1, ItemStack i2) {
         if (i1 == null) return false;
         if (i2 == null) return false;
 
