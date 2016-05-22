@@ -1,8 +1,20 @@
 package me.john000708.barrels;
 
+import java.util.List;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import me.john000708.barrels.listeners.DisplayListener;
 import me.john000708.barrels.listeners.WorldListener;
 import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
+import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.events.ItemUseEvent;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
@@ -13,16 +25,6 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.handlers.ItemInteractionHandler;
 import me.mrCookieSlime.Slimefun.Setup.SlimefunManager;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.List;
 
 /**
  * Created by John on 06.05.2016.
@@ -31,6 +33,7 @@ public class Barrels extends JavaPlugin {
 
     public static boolean displayItem;
     public static JavaPlugin plugin;
+    public static Config config;
 
     boolean plastic;
 
@@ -42,12 +45,14 @@ public class Barrels extends JavaPlugin {
         utils.setupUpdater(99947, getFile());
 
         utils.setupConfig();
+        config = utils.getConfig();
 
         new DisplayListener();
         new WorldListener();
 
-        displayItem = getConfig().getBoolean("options.displayItem");
-        plastic = getConfig().getBoolean("options.plastic-recipe");
+        displayItem = config.getBoolean("options.displayItem");
+        plastic = config.getBoolean("options.plastic-recipe");
+        
         setup();
         getLogger().info("Barrels v" + getDescription().getVersion() + " has been enabled!");
     }

@@ -1,5 +1,6 @@
 package me.john000708.barrels;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,6 +11,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
+import me.mrCookieSlime.CSCoreLibPlugin.general.String.StringUtils;
 import me.mrCookieSlime.Slimefun.SlimefunStartup;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
@@ -27,7 +29,10 @@ public class DisplayItem {
     	if (BlockStorage.getBlockInfo(b, "storedItems") != null) {
             int storedItems = Integer.valueOf(BlockStorage.getBlockInfo(b, "storedItems"));
             stack = menu.getItemInSlot(22).clone();
-            nametag = org.bukkit.ChatColor.translateAlternateColorCodes('&', "&9" + storedItems + "x &8(&e" + Math.round((float) storedItems / (float) capacity * 100.0F) + "%&8)");
+            nametag = ChatColor.translateAlternateColorCodes('&', Barrels.config.getString("options.item-format"));
+            nametag = nametag.replace("<storedAmount>", String.valueOf(storedItems));
+            nametag = nametag.replace("<storedPercentage>", String.valueOf(Math.round((float) storedItems / (float) capacity * 100.0F)));
+            nametag = nametag.replace("<storedItem>", StringUtils.formatItemName(stack, false));
         }
     	
         Item entity = getEntity(b);
