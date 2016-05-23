@@ -112,6 +112,12 @@ public class Barrel extends SlimefunItem {
 
                 BlockMenu inv = BlockStorage.getInventory(block);
 
+                if(BlockStorage.getBlockInfo(block, "explosion") != null) block.getWorld().dropItem(block.getLocation(), SlimefunItem.getByName("EXPLOSION_MODULE").getItem());
+                if(BlockStorage.getBlockInfo(block, "STRUCT_1") != null) block.getWorld().dropItem(block.getLocation(), SlimefunItem.getByName("STRUCT_UPGRADE_1").getItem());
+                if(BlockStorage.getBlockInfo(block, "STRUCT_2") != null) block.getWorld().dropItem(block.getLocation(), SlimefunItem.getByName("STRUCT_UPGRADE_2").getItem());
+                if(BlockStorage.getBlockInfo(block, "STRUCT_3") != null) block.getWorld().dropItem(block.getLocation(), SlimefunItem.getByName("STRUCT_UPGRADE_3").getItem());
+                if(BlockStorage.getBlockInfo(block, "protected") != null) block.getWorld().dropItem(block.getLocation(), SlimefunItem.getByName("BIO_PROTECTION").getItem());
+
                 if (BlockStorage.getBlockInfo(block, "storedItems") == null) return true;
                 int storedAmount = Integer.valueOf(BlockStorage.getBlockInfo(block, "storedItems"));
 
