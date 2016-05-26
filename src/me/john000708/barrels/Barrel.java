@@ -54,19 +54,22 @@ public class Barrel extends SlimefunItem {
 
             @Override
             public void newInstance(final BlockMenu menu, final Block b) {
-                if (BlockStorage.getBlockInfo(b, "storedItems") == null) {
-                    menu.replaceExistingItem(4, new CustomItem(new ItemStack(Material.BARRIER), "&7Empty"));
-                    menu.replaceExistingItem(22, new CustomItem(new ItemStack(Material.BARRIER), "&7Empty"));
-                }
-
-                if (Barrels.displayItem) DisplayItem.updateDisplayItem(b, getCapacity(b));
 
                 registerEvent(new ItemManipulationEvent() {
+                	
                     @Override
                     public void onEvent(int i, ItemStack itemStack, ItemStack itemStack1) {
                         updateBarrel(b);
                     }
+                    
                 });
+                
+                if (BlockStorage.getBlockInfo(b, "storedItems") == null) {
+                    menu.replaceExistingItem(4, new CustomItem(new ItemStack(Material.BARRIER), "&7Empty"));
+                    menu.replaceExistingItem(22, new CustomItem(new ItemStack(Material.BARRIER), "&7Empty"));
+                }
+                
+                if (Barrels.displayItem) DisplayItem.updateDisplayItem(b, getCapacity(b));
             }
 
             @Override
