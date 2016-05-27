@@ -74,7 +74,7 @@ public class Barrel extends SlimefunItem {
 
             @Override
             public boolean canOpen(Block b, Player p) {
-                boolean protect = BlockStorage.getBlockInfo(b, "protected") == null || BlockStorage.getBlockInfo(b, "owner").equals(p.getUniqueId().toString()) || BlockStorage.getBlockInfo(b, "whitelist").contains(p.getUniqueId().toString());
+                boolean protect = BlockStorage.getBlockInfo(b, "protected") == null || BlockStorage.getBlockInfo(b, "owner").equals(p.getUniqueId().toString()) || (BlockStorage.getBlockInfo(b, "whitelist") != null && BlockStorage.getBlockInfo(b, "whitelist").contains(p.getUniqueId().toString()));
 
                 return p.hasPermission("slimefun.inventory.bypass") || protect;
             }
