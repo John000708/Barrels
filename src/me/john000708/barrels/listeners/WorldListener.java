@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 
 /**
  * Created by John on 14.05.2016.

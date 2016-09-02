@@ -1,6 +1,6 @@
 main: me.john000708.barrels.Barrels
 name: Barrels
 description: A better way of storing items.
-version: 1.8
+version: 1.9
 author: John000708
 depend: [Slimefun]
