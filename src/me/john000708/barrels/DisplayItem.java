@@ -50,8 +50,8 @@ public class DisplayItem {
         else {
         	entity.setItemStack(new CustomItem(stack, "§6§lB4R3L - §eITEM" + System.nanoTime()));
         }
-
         entity.setCustomName(nametag);
+        entity.setInvulnerable(true);
     }
 
     public static void removeDisplayItem(Block b) {

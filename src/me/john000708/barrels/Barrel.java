@@ -60,8 +60,9 @@ public class Barrel extends SlimefunItem {
                 registerEvent(new ItemManipulationEvent() {
 
                     @Override
-                    public void onEvent(int i, ItemStack itemStack, ItemStack itemStack1) {
+                    public ItemStack onEvent(int i, ItemStack itemStack, ItemStack itemStack1) {
                         updateBarrel(b);
+                        return itemStack1;
                     }
 
                 });
