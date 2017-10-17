@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 /**
  * Created by John on 14.05.2016.
  */
+@SuppressWarnings("unused")
 public class WorldListener implements Listener {
 	
     public WorldListener() {
