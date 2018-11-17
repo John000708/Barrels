@@ -37,7 +37,7 @@ public class DisplayItem {
             nametag = ChatColor.translateAlternateColorCodes('&', Barrels.config.getString("options.item-format"));
             nametag = nametag.replace("<storedAmount>", String.valueOf(storedItems));
             nametag = nametag.replace("<storedPercentage>", String.valueOf(Math.round((float) storedItems / (float) capacity * 100.0F)));
-            nametag = nametag.replace("<storedItem>", StringUtils.formatItemName(stack, false));
+            nametag = nametag.replace("<storedItem>", stack.getItemMeta().getDisplayName());
         }
 
         Item entity = getEntity(b);
