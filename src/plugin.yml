@@ -1,7 +1,10 @@
 main: me.john000708.barrels.Barrels
 name: Barrels
 description: A better way of storing items.
-version: 1.13
-api-version: 1.13
 author: John000708
-depend: [Slimefun]
+version: ${project.version}
+
+api-version: 1.14
+
+
+depend: [CS-CoreLib, Slimefun]

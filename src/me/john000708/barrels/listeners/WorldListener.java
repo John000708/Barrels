@@ -1,12 +1,12 @@
 package me.john000708.barrels.listeners;
 
-import me.john000708.barrels.Barrels;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+
+import me.john000708.barrels.Barrels;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 /**
  * Created by John on 14.05.2016.
