@@ -33,9 +33,11 @@ import java.util.List;
  */
 public class Barrel extends SlimefunItem {
 
-    private int[] border1 = {0, 1, 2, 9, 11, 18, 19, 20};
-    private int[] border2 = {3, 5, 12, 13, 14, 21, 23};
-    private int[] border3 = {6, 7, 8, 15, 17, 24, 25, 26};
+	private static final String LORE_DATA = ChatColor.translateAlternateColorCodes('&', "&b&a&r&r&e&l");
+	
+    private static final int[] border1 = {0, 1, 2, 9, 11, 18, 19, 20};
+    private static final int[] border2 = {3, 5, 12, 13, 14, 21, 23};
+    private static final int[] border3 = {6, 7, 8, 15, 17, 24, 25, 26};
 
     private int capacity;
     private boolean allowDisplayItem;
@@ -141,7 +143,7 @@ public class Barrel extends SlimefunItem {
 
                 List<String> lore = meta.getLore();
                 for (int i = 0; i <= lore.size() - 1; i++) {
-                    if (lore.get(i).equals("�b�a�r�r�e�l")) {
+                    if (lore.get(i).equals(LORE_DATA)) {
                         lore.remove(i);
                         meta.setLore(lore);
                         item.setItemMeta(meta);
@@ -289,7 +291,7 @@ public class Barrel extends SlimefunItem {
                 } else if (inventory.getItemInSlot(22).getType() == Material.BARRIER) {
                     ItemStack stack = input.clone();
                     List<String> lore = (stack.hasItemMeta() && stack.getItemMeta().hasLore()) ? stack.getItemMeta().getLore() : new ArrayList<String>();
-                    lore.add("�b�a�r�r�e�l");
+                    lore.add(LORE_DATA);
                     ItemMeta meta = stack.getItemMeta();
                     meta.setLore(lore);
                     stack.setItemMeta(meta);
@@ -333,7 +335,7 @@ public class Barrel extends SlimefunItem {
         List<String> lore = meta.getLore();
 
         for (int i = 0; i <= lore.size() - 1; i++) {
-            if (lore.get(i).equals("�b�a�r�r�e�l")) {
+            if (lore.get(i).equals(LORE_DATA)) {
                 lore.remove(i);
                 break;
             }
@@ -342,7 +344,7 @@ public class Barrel extends SlimefunItem {
         meta.setLore(lore);
         output.setItemMeta(meta);
 
-        if (!fits(b, new ItemStack[]{output})) return;
+        if (!fits(b, output)) return;
 
         BlockStorage.addBlockInfo(b, "storedItems", String.valueOf(stored - output.getAmount()));
 
@@ -393,7 +395,7 @@ public class Barrel extends SlimefunItem {
 
         List<String> lore = meta.getLore();
         for (int i = 0; i <= lore.size() - 1; i++) {
-            if (lore.get(i).equals("�b�a�r�r�e�l")) {
+            if (lore.get(i).equals(LORE_DATA)) {
                 lore.remove(i);
                 meta.setLore(lore);
                 itemStack2.setItemMeta(meta);
@@ -416,11 +418,11 @@ public class Barrel extends SlimefunItem {
         return inv;
     }
 
-    protected boolean fits(Block b, ItemStack[] items) {
+    protected boolean fits(Block b, ItemStack... items) {
         return inject(b).addItem(items).isEmpty();
     }
 
-    protected void pushItems(Block b, ItemStack[] items) {
+    protected void pushItems(Block b, ItemStack... items) {
         Inventory inv = inject(b);
         inv.addItem(items);
 
