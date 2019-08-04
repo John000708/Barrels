@@ -1,7 +1,6 @@
 package me.john000708.barrels;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -52,7 +51,7 @@ public class Barrels extends JavaPlugin {
 
         displayItem = config.getBoolean("options.displayItem");
         plastic = config.getBoolean("options.plastic-recipe");
-        
+
         setup();
         getLogger().info("Barrels v" + getDescription().getVersion() + " has been enabled!");
     }
@@ -151,7 +150,7 @@ public class Barrels extends JavaPlugin {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
 
                     BlockStorage.addBlockInfo(clickedBlock, "STRUCT_1", "true");
-                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.parseInt(BlockStorage.getBlockInfo(clickedBlock, "capacity")) + 8192));
+                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getBlockInfo(clickedBlock, "capacity")) + 8192));
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
                 }
@@ -169,7 +168,7 @@ public class Barrels extends JavaPlugin {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
 
                     BlockStorage.addBlockInfo(clickedBlock, "STRUCT_2", "true");
-                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.parseInt(BlockStorage.getBlockInfo(clickedBlock, "capacity")) + 16384));
+                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getBlockInfo(clickedBlock, "capacity")) + 16384));
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
                 }
@@ -187,7 +186,7 @@ public class Barrels extends JavaPlugin {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
 
                     BlockStorage.addBlockInfo(clickedBlock, "STRUCT_3", "true");
-                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.parseInt(BlockStorage.getBlockInfo(clickedBlock, "capacity")) + 32768));
+                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getBlockInfo(clickedBlock, "capacity")) + 32768));
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
                 }
@@ -218,13 +217,11 @@ public class Barrels extends JavaPlugin {
                 Block clickedBlock = itemUseEvent.getClickedBlock();
                 ItemStack idCard = itemStack;
                 ItemMeta meta = idCard.getItemMeta();
-                List<String> lore = Objects.requireNonNull(idCard.getItemMeta()).getLore();
+                List<String> lore = idCard.getItemMeta().getLore();
 
-                assert lore != null;
                 if (lore.get(0).equals("")) {
                     lore.set(0, ChatColor.translateAlternateColorCodes('&', "&0" + player.getUniqueId().toString()));
                     lore.set(1, ChatColor.translateAlternateColorCodes('&', "&fBound to: " + player.getName()));
-                    assert meta != null;
                     meta.setLore(lore);
                     idCard.setItemMeta(meta);
                     player.sendMessage(ChatColor.GREEN + "ID Card bound.");
