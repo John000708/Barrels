@@ -3,6 +3,7 @@ package me.john000708.barrels.listeners;
 import me.john000708.barrels.Barrels;
 import me.john000708.barrels.DisplayItem;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -20,7 +21,7 @@ public class DisplayListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Barrels.plugin);
     }
 
-    public static final String DISPLAY_NAME = "§6§lB4R3L - §eITEM";
+    public static final String DISPLAY_NAME = ChatColor.translateAlternateColorCodes('&', "&6&lB4R3L - &eITEM");
 
     @EventHandler
     static void onPickup(EntityPickupItemEvent e) {
