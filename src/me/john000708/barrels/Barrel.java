@@ -1,5 +1,18 @@
 package me.john000708.barrels;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
@@ -13,20 +26,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
-import me.mrCookieSlime.Slimefun.api.inventory.ItemManipulationEvent;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by John on 06.05.2016.
@@ -57,14 +57,9 @@ public class Barrel extends SlimefunItem {
             @Override
             public void newInstance(final BlockMenu menu, final Block b) {
 
-                registerEvent(new ItemManipulationEvent() {
-
-                    @Override
-                    public ItemStack onEvent(int i, ItemStack itemStack, ItemStack itemStack1) {
-                        updateBarrel(b);
-                        return itemStack1;
-                    }
-
+                registerEvent((slot, prev, next) -> {
+                	 updateBarrel(b);
+                     return next;
                 });
 
                 if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") == null) {

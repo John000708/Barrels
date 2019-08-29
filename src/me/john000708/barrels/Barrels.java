@@ -59,8 +59,7 @@ public class Barrels extends JavaPlugin {
     public void onDisable() {
         plugin = null;
     }
-
-    @SuppressWarnings("deprecation")
+    
     private void setup() {
         Category barrelCat = new Category(new CustomItem(new ItemStack(Material.OAK_LOG), "&aBarrels", "", "&a> Click to open"), 2);
 
