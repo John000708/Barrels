@@ -43,7 +43,7 @@ public class Barrel extends SlimefunItem {
     private boolean allowDisplayItem;
 
     // The access can be package-private.
-    Barrel(Category category, ItemStack item, String name, RecipeType recipeType, final ItemStack[] recipe, int capacity) {
+    protected Barrel(Category category, ItemStack item, String name, RecipeType recipeType, final ItemStack[] recipe, int capacity) {
         super(category, item, name, recipeType, recipe);
 
         this.capacity = capacity;
