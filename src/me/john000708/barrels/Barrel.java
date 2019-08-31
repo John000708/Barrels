@@ -42,7 +42,8 @@ public class Barrel extends SlimefunItem {
     private int capacity;
     private boolean allowDisplayItem;
 
-    public Barrel(Category category, ItemStack item, String name, RecipeType recipeType, final ItemStack[] recipe, int capacity) {
+    // The access can be package-private.
+    Barrel(Category category, ItemStack item, String name, RecipeType recipeType, final ItemStack[] recipe, int capacity) {
         super(category, item, name, recipeType, recipe);
 
         this.capacity = capacity;
@@ -131,7 +132,8 @@ public class Barrel extends SlimefunItem {
                     b.getWorld().dropItem(b.getLocation(), SlimefunItem.getByID("BIO_PROTECTION").getItem());
 
                 if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") == null) return true;
-                int storedAmount = Integer.valueOf(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
+                //There's no need to box the integer.
+                int storedAmount = Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
 
                 ItemStack item = inv.getItemInSlot(22);
                 ItemMeta meta = item.getItemMeta();
@@ -208,7 +210,8 @@ public class Barrel extends SlimefunItem {
             BlockStorage.addBlockInfo(b, "capacity", String.valueOf(this.capacity));
         }
 
-        return Integer.valueOf(BlockStorage.getLocationInfo(b.getLocation(), "capacity"));
+        //There's no need to box the integer.
+        return Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "capacity"));
     }
 
     public int[] getInputSlots() {
@@ -222,7 +225,8 @@ public class Barrel extends SlimefunItem {
     private ItemStack getCapacityItem(Block b) {
         StringBuilder bar = new StringBuilder();
 
-        int storedItems = Integer.valueOf(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
+        //There's no need to box the integer.
+        int storedItems = Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
         float percentage = Math.round((float) storedItems / (float) getCapacity(b) * 100.0F);
 
         bar.append("&8[");
@@ -271,7 +275,8 @@ public class Barrel extends SlimefunItem {
                     if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") == null) {
                         BlockStorage.addBlockInfo(b, "storedItems", "1");
                     }
-                    int storedAmount = Integer.valueOf(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
+                    //There's no need to box the integer.
+                    int storedAmount = Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
 
                     if (storedAmount < getCapacity(b)) {
                         if (storedAmount + input.getAmount() > getCapacity(b)) {

@@ -19,13 +19,12 @@ import me.john000708.barrels.listeners.WorldListener;
 import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.events.ItemUseEvent;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.handlers.ItemInteractionHandler;
+import me.mrCookieSlime.Slimefun.Objects.handlers.ItemInteractionHandler;
 import me.mrCookieSlime.Slimefun.Setup.SlimefunManager;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
@@ -38,7 +37,8 @@ public class Barrels extends JavaPlugin {
     public static JavaPlugin plugin;
     public static Config config;
 
-    boolean plastic;
+    //Can be private.
+    private boolean plastic;
 
     public void onEnable() {
         plugin = this;
@@ -140,7 +140,10 @@ public class Barrels extends JavaPlugin {
 
         }.register();
 
-        new SlimefunItem(barrelCat, EXPLOSION_MODULE, "EXPLOSION_MODULE", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{new ItemStack(Material.TNT), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.TNT), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.TNT), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.TNT)}).register(false, new ItemInteractionHandler() {
+        //This line is too long to be readable easily.
+        new SlimefunItem(barrelCat, EXPLOSION_MODULE, "EXPLOSION_MODULE", RecipeType.ENHANCED_CRAFTING_TABLE,
+        new ItemStack[]{new ItemStack(Material.TNT), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.TNT), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.TNT), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.TNT)})
+        .register(false, new ItemInteractionHandler() {
 
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
@@ -149,8 +152,15 @@ public class Barrels extends JavaPlugin {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
                     if (BlockStorage.getLocationInfo(clickedBlock.getLocation(), "explosion") == null) {
                         BlockStorage.addBlockInfo(clickedBlock, "explosion", "true");
-                        player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                        // Fixes issue #6.
+                        //player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                        int amount = itemStack.getAmount();
+                        if (amount <= 1) {
+                            itemStack.setAmount(0);
+                        }
+                        else itemStack.setAmount(amount - 1);
                         player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
+                        return true;
                     }
                 }
                 return false;
@@ -167,9 +177,17 @@ public class Barrels extends JavaPlugin {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
 
                     BlockStorage.addBlockInfo(clickedBlock, "STRUCT_1", "true");
-                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getLocationInfo(clickedBlock.getLocation(), "capacity")) + 8192));
-                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                    //There's no need to box the integer.
+                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.parseInt(BlockStorage.getLocationInfo(clickedBlock.getLocation(), "capacity")) + 8192));
+                    // Fixes issue #6.
+                    //player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                    int amount = itemStack.getAmount();
+                    if (amount <= 1) {
+                        itemStack.setAmount(0);
+                    }
+                    else itemStack.setAmount(amount - 1);
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
+                    return true;
                 }
                 return false;
             }
@@ -185,9 +203,17 @@ public class Barrels extends JavaPlugin {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
 
                     BlockStorage.addBlockInfo(clickedBlock, "STRUCT_2", "true");
-                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getLocationInfo(clickedBlock.getLocation(), "capacity")) + 16384));
-                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                    //There's no need to box the integer.
+                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.parseInt(BlockStorage.getLocationInfo(clickedBlock.getLocation(), "capacity")) + 16384));
+                    // Fixes issue #6.
+                    //player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                    int amount = itemStack.getAmount();
+                    if (amount <= 1) {
+                        itemStack.setAmount(0);
+                    }
+                    else itemStack.setAmount(amount - 1);
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
+                    return true;
                 }
                 return false;
             }
@@ -203,9 +229,17 @@ public class Barrels extends JavaPlugin {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
 
                     BlockStorage.addBlockInfo(clickedBlock, "STRUCT_3", "true");
-                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getLocationInfo(clickedBlock.getLocation(), "capacity")) + 32768));
-                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                    //There's no need to box the integer.
+                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.parseInt(BlockStorage.getLocationInfo(clickedBlock.getLocation(), "capacity")) + 32768));
+                    // Fixes issue #6.
+                    //player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                    int amount = itemStack.getAmount();
+                    if (amount <= 1) {
+                        itemStack.setAmount(0);
+                    }
+                    else itemStack.setAmount(amount - 1);
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
+                    return true;
                 }
                 return false;
             }
@@ -220,8 +254,15 @@ public class Barrels extends JavaPlugin {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
 
                     BlockStorage.addBlockInfo(clickedBlock, "protected", "true");
-                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                    // Fixes issue #6.
+                    //player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                    int amount = itemStack.getAmount();
+                    if (amount <= 1) {
+                        itemStack.setAmount(0);
+                    }
+                    else itemStack.setAmount(amount - 1);
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
+                    return true;
                 }
                 return false;
             }
@@ -232,27 +273,35 @@ public class Barrels extends JavaPlugin {
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, ID_CARD, false)) return false;
                 Block clickedBlock = itemUseEvent.getClickedBlock();
-                ItemStack idCard = itemStack;
-                ItemMeta meta = idCard.getItemMeta();
-                List<String> lore = idCard.getItemMeta().getLore();
+                // No need to reference itemStack again in a new variable.
+                //ItemStack idCard = itemStack;
+                ItemMeta meta = itemStack.getItemMeta();
+                List<String> lore = itemStack.getItemMeta().getLore();
 
                 if (lore.get(0).equals("")) {
                     lore.set(0, ChatColor.translateAlternateColorCodes('&', "&0" + player.getUniqueId().toString()));
                     lore.set(1, ChatColor.translateAlternateColorCodes('&', "&fBound to: " + player.getName()));
                     meta.setLore(lore);
-                    idCard.setItemMeta(meta);
+                    itemStack.setItemMeta(meta);
                     player.sendMessage(ChatColor.GREEN + "ID Card bound.");
+                    return true;
                 } else if (clickedBlock != null && BlockStorage.hasBlockInfo(clickedBlock) && BlockStorage.checkID(clickedBlock).startsWith("BARREL_") && BlockStorage.getLocationInfo(clickedBlock.getLocation(), "whitelist") != null && BlockStorage.getLocationInfo(clickedBlock.getLocation(), "owner").equals(player.getUniqueId().toString())) {
                     String whitelistedPlayers = BlockStorage.getLocationInfo(clickedBlock.getLocation(), "whitelist");
                     if (!whitelistedPlayers.contains(ChatColor.stripColor(lore.get(0)))) {
                         BlockStorage.addBlockInfo(clickedBlock, "whitelist", whitelistedPlayers + ChatColor.stripColor(lore.get(0)) + ";");
-                        player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                        // Fixes issue #6.
+                        //player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
+                        int amount = itemStack.getAmount();
+                        if (amount <= 1) {
+                            itemStack.setAmount(0);
+                        }
+                        else itemStack.setAmount(amount - 1);
                         player.sendMessage(ChatColor.GREEN + "Player successfully whitelisted!");
                     } 
                     else {
                         player.sendMessage(ChatColor.RED + "The player is already whitelisted.");
                     }
-
+                    return true;
                 }
                 return false;
             }
