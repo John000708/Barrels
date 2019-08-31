@@ -22,7 +22,7 @@ import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunBlockHandler;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.UnregisterReason;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.handlers.BlockTicker;
+import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
@@ -308,7 +308,8 @@ public class Barrel extends SlimefunItem {
 
         if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") == null) return;
 
-        int stored = Integer.valueOf(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
+        //There's no need to box the integer.
+        int stored = Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
         ItemStack output = inventory.getItemInSlot(22).clone();
 
         if (inventory.getItemInSlot(getOutputSlots()[0]) != null) {
@@ -318,20 +319,10 @@ public class Barrel extends SlimefunItem {
 
             int requested = output.getMaxStackSize() - inventory.getItemInSlot(getOutputSlots()[0]).getAmount();
 
-            if (stored >= requested) {
-                output.setAmount(requested);
-            } 
-            else {
-                output.setAmount(stored);
-            }
+            output.setAmount(Math.min(stored, requested));
         } 
         else {
-            if (stored > output.getMaxStackSize()) {
-                output.setAmount(output.getMaxStackSize());
-            } 
-            else {
-                output.setAmount(stored);
-            }
+            output.setAmount(Math.min(stored, output.getMaxStackSize()));
         }
 
         ItemMeta meta = output.getItemMeta();
@@ -353,7 +344,8 @@ public class Barrel extends SlimefunItem {
 
         BlockStorage.addBlockInfo(b, "storedItems", String.valueOf(stored - output.getAmount()));
 
-        pushItems(b, new ItemStack[]{output});
+        // There's no need to create an array in here.
+        pushItems(b, output);
 
         if ((stored - output.getAmount()) <= 0) {
             BlockStorage.addBlockInfo(b, "storedItems", null);
