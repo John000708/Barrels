@@ -42,7 +42,6 @@ public class Barrel extends SlimefunItem {
     private int capacity;
     private boolean allowDisplayItem;
 
-    // The access can be package-private.
     protected Barrel(Category category, ItemStack item, String name, RecipeType recipeType, final ItemStack[] recipe, int capacity) {
         super(category, item, name, recipeType, recipe);
 
@@ -185,7 +184,6 @@ public class Barrel extends SlimefunItem {
             @Override
             public void tick(Block block, SlimefunItem slimefunItem, Config config) {
                 updateBarrel(block);
-
 
                 if (Barrels.displayItem) {
                     allowDisplayItem = block.getRelative(BlockFace.UP).getType() == Material.AIR;
