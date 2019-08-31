@@ -2,6 +2,7 @@ package me.john000708.barrels;
 
 import java.util.List;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,6 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.github.thebusybiscuit.cscorelib2.updater.BukkitUpdater;
+import io.github.thebusybiscuit.cscorelib2.updater.GitHubBuildsUpdater;
+import io.github.thebusybiscuit.cscorelib2.updater.Updater;
 import me.john000708.barrels.listeners.DisplayListener;
 import me.john000708.barrels.listeners.WorldListener;
 import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
@@ -40,11 +44,25 @@ public class Barrels extends JavaPlugin {
         plugin = this;
 
         PluginUtils utils = new PluginUtils(this);
-        utils.setupMetrics();
-        utils.setupUpdater(99947, getFile());
-
         utils.setupConfig();
         config = utils.getConfig();
+        
+        // Setting up bStats
+        new Metrics(this);
+
+		// Setting up the Auto-Updater
+		Updater updater;
+
+		if (!getDescription().getVersion().startsWith("DEV - ")) {
+			// We are using an official build, use the BukkitDev Updater
+			updater = new BukkitUpdater(this, getFile(), 99947);
+		}
+		else {
+			// If we are using a development build, we want to switch to our custom 
+			updater = new GitHubBuildsUpdater(this, getFile(), "John000708/Barrels/master");
+		}
+
+		if (config.getBoolean("options.auto-update")) updater.start();
 
         new DisplayListener();
         new WorldListener();
@@ -129,7 +147,7 @@ public class Barrels extends JavaPlugin {
                 if (!SlimefunManager.isItemSimiliar(itemStack, EXPLOSION_MODULE, true)) return false;
                 if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_")) {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
-                    if (BlockStorage.getBlockInfo(clickedBlock, "explosion") == null) {
+                    if (BlockStorage.getLocationInfo(clickedBlock.getLocation(), "explosion") == null) {
                         BlockStorage.addBlockInfo(clickedBlock, "explosion", "true");
                         player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
                         player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
@@ -145,11 +163,11 @@ public class Barrels extends JavaPlugin {
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, STRUCT_UPGRADE_1, true)) return false;
-                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getBlockInfo(itemUseEvent.getClickedBlock(), "STRUCT_1") == null) {
+                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getLocationInfo(itemUseEvent.getClickedBlock().getLocation(), "STRUCT_1") == null) {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
 
                     BlockStorage.addBlockInfo(clickedBlock, "STRUCT_1", "true");
-                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getBlockInfo(clickedBlock, "capacity")) + 8192));
+                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getLocationInfo(clickedBlock.getLocation(), "capacity")) + 8192));
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
                 }
@@ -163,11 +181,11 @@ public class Barrels extends JavaPlugin {
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, STRUCT_UPGRADE_2, true)) return false;
-                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getBlockInfo(itemUseEvent.getClickedBlock(), "STRUCT_2") == null) {
+                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getLocationInfo(itemUseEvent.getClickedBlock().getLocation(), "STRUCT_2") == null) {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
 
                     BlockStorage.addBlockInfo(clickedBlock, "STRUCT_2", "true");
-                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getBlockInfo(clickedBlock, "capacity")) + 16384));
+                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getLocationInfo(clickedBlock.getLocation(), "capacity")) + 16384));
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
                 }
@@ -181,11 +199,11 @@ public class Barrels extends JavaPlugin {
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, STRUCT_UPGRADE_3, true)) return false;
-                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getBlockInfo(itemUseEvent.getClickedBlock(), "STRUCT_3") == null) {
+                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getLocationInfo(itemUseEvent.getClickedBlock().getLocation(), "STRUCT_3") == null) {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
 
                     BlockStorage.addBlockInfo(clickedBlock, "STRUCT_3", "true");
-                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getBlockInfo(clickedBlock, "capacity")) + 32768));
+                    BlockStorage.addBlockInfo(clickedBlock, "capacity", String.valueOf(Integer.valueOf(BlockStorage.getLocationInfo(clickedBlock.getLocation(), "capacity")) + 32768));
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
                 }
@@ -198,7 +216,7 @@ public class Barrels extends JavaPlugin {
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, BIOMETRIC_PROTECTION, true)) return false;
-                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getBlockInfo(itemUseEvent.getClickedBlock(), "BIO_PROT") == null) {
+                if (itemUseEvent.getClickedBlock() != null && BlockStorage.hasBlockInfo(itemUseEvent.getClickedBlock()) && BlockStorage.checkID(itemUseEvent.getClickedBlock()).startsWith("BARREL_") && BlockStorage.getLocationInfo(itemUseEvent.getClickedBlock().getLocation(), "BIO_PROT") == null) {
                     Block clickedBlock = itemUseEvent.getClickedBlock();
 
                     BlockStorage.addBlockInfo(clickedBlock, "protected", "true");
@@ -224,13 +242,14 @@ public class Barrels extends JavaPlugin {
                     meta.setLore(lore);
                     idCard.setItemMeta(meta);
                     player.sendMessage(ChatColor.GREEN + "ID Card bound.");
-                } else if (clickedBlock != null && BlockStorage.hasBlockInfo(clickedBlock) && BlockStorage.checkID(clickedBlock).startsWith("BARREL_") && BlockStorage.getBlockInfo(clickedBlock, "whitelist") != null && BlockStorage.getBlockInfo(clickedBlock, "owner").equals(player.getUniqueId().toString())) {
-                    String whitelistedPlayers = BlockStorage.getBlockInfo(clickedBlock, "whitelist");
+                } else if (clickedBlock != null && BlockStorage.hasBlockInfo(clickedBlock) && BlockStorage.checkID(clickedBlock).startsWith("BARREL_") && BlockStorage.getLocationInfo(clickedBlock.getLocation(), "whitelist") != null && BlockStorage.getLocationInfo(clickedBlock.getLocation(), "owner").equals(player.getUniqueId().toString())) {
+                    String whitelistedPlayers = BlockStorage.getLocationInfo(clickedBlock.getLocation(), "whitelist");
                     if (!whitelistedPlayers.contains(ChatColor.stripColor(lore.get(0)))) {
                         BlockStorage.addBlockInfo(clickedBlock, "whitelist", whitelistedPlayers + ChatColor.stripColor(lore.get(0)) + ";");
                         player.getInventory().setItem(player.getInventory().getHeldItemSlot(), InvUtils.decreaseItem(itemStack, 1));
                         player.sendMessage(ChatColor.GREEN + "Player successfully whitelisted!");
-                    } else {
+                    } 
+                    else {
                         player.sendMessage(ChatColor.RED + "The player is already whitelisted.");
                     }
 

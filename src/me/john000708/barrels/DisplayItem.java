@@ -11,7 +11,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
-import me.mrCookieSlime.Slimefun.SlimefunStartup;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 
@@ -45,12 +44,13 @@ public class DisplayItem {
         if (entity == null) {
         	entity = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), new CustomItem(stack, ITEM_DATA + System.nanoTime()));
         	entity.setVelocity(new Vector(0, 0.1, 0));
-            entity.setMetadata("no_pickup", new FixedMetadataValue(SlimefunStartup.instance, "barrel"));
+            entity.setMetadata("no_pickup", new FixedMetadataValue(Barrels.plugin, "barrel"));
             entity.setCustomNameVisible(true);
         }
         else {
         	entity.setItemStack(new CustomItem(stack, ITEM_DATA + System.nanoTime()));
         }
+        
         entity.setCustomName(nametag);
         entity.setInvulnerable(true);
     }

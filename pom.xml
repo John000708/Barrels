@@ -4,7 +4,7 @@
 
   	<groupId>me.john000708</groupId>
   	<artifactId>Barrels</artifactId>
-  	<version>1.2.1</version>
+  	<version>1.4</version>
   
   	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -25,6 +25,10 @@
 		    <id>jitpack.io</id>
 		    <url>https://jitpack.io</url>
 		</repository>
+        <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.org/repository/maven-public</url>
+        </repository>
 	</repositories>
 	
 	<build>
@@ -46,6 +50,46 @@
                 </includes>
             </resource>
         </resources>
+        
+        <plugins>
+        	<plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-shade-plugin</artifactId>
+    			<version>3.2.1</version>
+
+    			<configuration>
+    				<filters>
+      					<filter>
+    						<artifact>com.github.thebusybiscuit:CS-CoreLib2</artifact>
+    						<includes>
+    							<include>**/cscorelib2/updater/**</include>
+    						</includes>
+  						</filter>
+      				</filters>
+      					
+      				<relocations>
+      					<relocation>
+            				<pattern>org.bstats</pattern>
+            				<shadedPattern>me.john000708.barrels.bstats</shadedPattern>
+          				</relocation>
+          				
+        				<relocation>
+          					<pattern>io.github.thebusybiscuit.cscorelib2</pattern>
+          					<shadedPattern>me.john000708.barrels.cscorelib2</shadedPattern>
+      					</relocation>
+      				</relocations>
+    			</configuration>
+
+    			<executions>
+      				<execution>
+        				<phase>package</phase>
+        				<goals>
+         					<goal>shade</goal>
+        				</goals>
+      				</execution>
+    			</executions>
+  			</plugin>
+        </plugins>
     </build>
     
     <dependencies>
@@ -62,8 +106,20 @@
         <dependency>
 	    	<groupId>com.github.TheBusyBiscuit</groupId>
 	   		<artifactId>Slimefun4</artifactId>
-	   		<version>99cd14fa5f</version>
+	   		<version>3400746c34</version>
 	    </dependency>
+        <dependency>
+  			<groupId>com.github.thebusybiscuit</groupId>
+  			<artifactId>CS-CoreLib2</artifactId>
+  			<version>0.3.7</version>
+  			<scope>compile</scope>
+		</dependency>
+		<dependency>
+  			<groupId>org.bstats</groupId>
+  			<artifactId>bstats-bukkit</artifactId>
+  			<version>1.5</version>
+  			<scope>compile</scope>
+		</dependency>
     </dependencies>
     
 </project>

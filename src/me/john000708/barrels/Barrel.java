@@ -90,7 +90,7 @@ public class Barrel extends SlimefunItem {
             public int[] getSlotsAccessedByItemTransport(BlockMenu menu, ItemTransportFlow flow, ItemStack item) {
                 if (flow == ItemTransportFlow.INSERT) {
                     if (BlockStorage.getLocationInfo(menu.getLocation(), "storedItems") != null)
-                        return isSimiliar(item, menu.getItemInSlot(22)) ? getInputSlots() : new int[0];
+                        return isSimilar(item, menu.getItemInSlot(22)) ? getInputSlots() : new int[0];
                     else return getInputSlots();
                 } 
                 else return getOutputSlots();
@@ -181,11 +181,6 @@ public class Barrel extends SlimefunItem {
             }
 
             @Override
-            public void uniqueTick() {
-
-            }
-
-            @Override
             public void tick(Block block, SlimefunItem slimefunItem, Config config) {
                 updateBarrel(block);
 
@@ -195,6 +190,10 @@ public class Barrel extends SlimefunItem {
                     DisplayItem.updateDisplayItem(block, getCapacity(block), allowDisplayItem);
                 }
             }
+
+			@Override
+			public void uniqueTick() {
+			}
         });
 
         super.register(false);
@@ -224,18 +223,20 @@ public class Barrel extends SlimefunItem {
         StringBuilder bar = new StringBuilder();
 
         int storedItems = Integer.valueOf(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
-
         float percentage = Math.round((float) storedItems / (float) getCapacity(b) * 100.0F);
 
         bar.append("&8[");
 
         if (percentage < 25) {
             bar.append("&2");
-        } else if (percentage < 50) {
+        } 
+        else if (percentage < 50) {
             bar.append("&a");
-        } else if (percentage < 75) {
+        } 
+        else if (percentage < 75) {
             bar.append("&e");
-        } else {
+        } 
+        else {
             bar.append("&c");
         }
 
@@ -266,7 +267,7 @@ public class Barrel extends SlimefunItem {
             if (inventory.getItemInSlot(slot) != null) {
                 ItemStack input = inventory.getItemInSlot(slot);
 
-                if (isSimiliar(input, inventory.getItemInSlot(22))) {
+                if (isSimilar(input, inventory.getItemInSlot(22))) {
                     if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") == null) {
                         BlockStorage.addBlockInfo(b, "storedItems", "1");
                     }
@@ -283,7 +284,8 @@ public class Barrel extends SlimefunItem {
                             inventory.replaceExistingItem(4, getCapacityItem(b), false);
                         }
                     }
-                } else if (inventory.getItemInSlot(22).getType() == Material.BARRIER) {
+                }
+                else if (inventory.getItemInSlot(22).getType() == Material.BARRIER) {
                     ItemStack stack = input.clone();
                     List<String> lore = (stack.hasItemMeta() && stack.getItemMeta().hasLore()) ? stack.getItemMeta().getLore() : new ArrayList<String>();
                     lore.add(LORE_DATA);
@@ -305,7 +307,7 @@ public class Barrel extends SlimefunItem {
         ItemStack output = inventory.getItemInSlot(22).clone();
 
         if (inventory.getItemInSlot(getOutputSlots()[0]) != null) {
-            if (!isSimiliar(inventory.getItemInSlot(getOutputSlots()[0]), output)) {
+            if (!isSimilar(inventory.getItemInSlot(getOutputSlots()[0]), output)) {
                 return;
             }
 
@@ -313,13 +315,16 @@ public class Barrel extends SlimefunItem {
 
             if (stored >= requested) {
                 output.setAmount(requested);
-            } else {
+            } 
+            else {
                 output.setAmount(stored);
             }
-        } else {
+        } 
+        else {
             if (stored > output.getMaxStackSize()) {
                 output.setAmount(output.getMaxStackSize());
-            } else {
+            } 
+            else {
                 output.setAmount(stored);
             }
         }
@@ -373,7 +378,7 @@ public class Barrel extends SlimefunItem {
         preset.addMenuClickHandler(22, (Player player, int i, ItemStack itemStack, ClickAction clickAction) -> false);
     }
 
-    private boolean isSimiliar(ItemStack i1, ItemStack i2) {
+    private boolean isSimilar(ItemStack i1, ItemStack i2) {
         if (i1 == null) return false;
         if (i2 == null) return false;
 
