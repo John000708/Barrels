@@ -284,7 +284,6 @@ public class Barrels extends JavaPlugin {
                     meta.setLore(lore);
                     itemStack.setItemMeta(meta);
                     player.sendMessage(ChatColor.GREEN + "ID Card bound.");
-                    return true;
                 } else if (clickedBlock != null && BlockStorage.hasBlockInfo(clickedBlock) && BlockStorage.checkID(clickedBlock).startsWith("BARREL_") && BlockStorage.getLocationInfo(clickedBlock.getLocation(), "whitelist") != null && BlockStorage.getLocationInfo(clickedBlock.getLocation(), "owner").equals(player.getUniqueId().toString())) {
                     String whitelistedPlayers = BlockStorage.getLocationInfo(clickedBlock.getLocation(), "whitelist");
                     if (!whitelistedPlayers.contains(ChatColor.stripColor(lore.get(0)))) {
@@ -301,9 +300,8 @@ public class Barrels extends JavaPlugin {
                     else {
                         player.sendMessage(ChatColor.RED + "The player is already whitelisted.");
                     }
-                    return true;
-                }
-                return false;
+                } else return false;
+                return true;
             }
         });
     }
