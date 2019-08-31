@@ -160,15 +160,15 @@ public class Barrels extends JavaPlugin {
                         }
                         else itemStack.setAmount(amount - 1);
                         player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
-                        return true;
                     }
                 }
-                return false;
+                return true;
             }
-
         });
 
-        new SlimefunItem(barrelCat, STRUCT_UPGRADE_1, "STRUCT_UPGRADE_1", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, MEDIUM_BARREL, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT}).register(false, new ItemInteractionHandler() {
+        new SlimefunItem(barrelCat, STRUCT_UPGRADE_1, "STRUCT_UPGRADE_1", RecipeType.ENHANCED_CRAFTING_TABLE,
+        new ItemStack[]{SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, MEDIUM_BARREL, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT})
+        .register(false, new ItemInteractionHandler() {
 
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
@@ -187,14 +187,14 @@ public class Barrels extends JavaPlugin {
                     }
                     else itemStack.setAmount(amount - 1);
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
-                    return true;
                 }
-                return false;
+                return true;
             }
-
         });
 
-        new SlimefunItem(barrelCat, STRUCT_UPGRADE_2, "STRUCT_UPGRADE_2", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, BIG_BARREL, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT}).register(false, new ItemInteractionHandler() {
+        new SlimefunItem(barrelCat, STRUCT_UPGRADE_2, "STRUCT_UPGRADE_2", RecipeType.ENHANCED_CRAFTING_TABLE,
+        new ItemStack[]{SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, BIG_BARREL, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT})
+        .register(false, new ItemInteractionHandler() {
 
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
@@ -213,14 +213,14 @@ public class Barrels extends JavaPlugin {
                     }
                     else itemStack.setAmount(amount - 1);
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
-                    return true;
                 }
-                return false;
+                return true;
             }
-
         });
 
-        new SlimefunItem(barrelCat, STRUCT_UPGRADE_3, "STRUCT_UPGRADE_3", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, LARGE_BARREL, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT}).register(false, new ItemInteractionHandler() {
+        new SlimefunItem(barrelCat, STRUCT_UPGRADE_3, "STRUCT_UPGRADE_3", RecipeType.ENHANCED_CRAFTING_TABLE,
+        new ItemStack[]{SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, LARGE_BARREL, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT})
+        .register(false, new ItemInteractionHandler() {
 
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
@@ -239,14 +239,14 @@ public class Barrels extends JavaPlugin {
                     }
                     else itemStack.setAmount(amount - 1);
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
-                    return true;
                 }
-                return false;
+                return true;
             }
-
         });
 
-        new SlimefunItem(barrelCat, BIOMETRIC_PROTECTION, "BIO_PROTECTION", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{new ItemStack(Material.REDSTONE), new ItemStack(Material.DIAMOND), new ItemStack(Material.REDSTONE), new ItemStack(Material.DIAMOND), new ItemStack(Material.PAPER), new ItemStack(Material.DIAMOND), new ItemStack(Material.REDSTONE), new ItemStack(Material.DIAMOND), new ItemStack(Material.REDSTONE)}).register(false, new ItemInteractionHandler() {
+        new SlimefunItem(barrelCat, BIOMETRIC_PROTECTION, "BIO_PROTECTION", RecipeType.ENHANCED_CRAFTING_TABLE,
+        new ItemStack[]{new ItemStack(Material.REDSTONE), new ItemStack(Material.DIAMOND), new ItemStack(Material.REDSTONE), new ItemStack(Material.DIAMOND), new ItemStack(Material.PAPER), new ItemStack(Material.DIAMOND), new ItemStack(Material.REDSTONE), new ItemStack(Material.DIAMOND), new ItemStack(Material.REDSTONE)})
+        .register(false, new ItemInteractionHandler() {
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, BIOMETRIC_PROTECTION, true)) return false;
@@ -262,13 +262,14 @@ public class Barrels extends JavaPlugin {
                     }
                     else itemStack.setAmount(amount - 1);
                     player.sendMessage(ChatColor.GREEN + "Module successfully applied!");
-                    return true;
                 }
-                return false;
+                return true;
             }
         });
 
-        new SlimefunItem(barrelCat, ID_CARD, "BARREL_ID_CARD", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.PAPER), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.REDSTONE)}).register(false, new ItemInteractionHandler() {
+        new SlimefunItem(barrelCat, ID_CARD, "BARREL_ID_CARD", RecipeType.ENHANCED_CRAFTING_TABLE,
+        new ItemStack[]{new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.PAPER), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.REDSTONE)})
+        .register(false, new ItemInteractionHandler() {
             @Override
             public boolean onRightClick(ItemUseEvent itemUseEvent, Player player, ItemStack itemStack) {
                 if (!SlimefunManager.isItemSimiliar(itemStack, ID_CARD, false)) return false;
@@ -276,7 +277,9 @@ public class Barrels extends JavaPlugin {
                 // No need to reference itemStack again in a new variable.
                 //ItemStack idCard = itemStack;
                 ItemMeta meta = itemStack.getItemMeta();
+                if (!meta.hasLore()) return false;
                 List<String> lore = itemStack.getItemMeta().getLore();
+                if (lore.size() != 2) return false;
 
                 if (lore.get(0).equals("")) {
                     lore.set(0, ChatColor.translateAlternateColorCodes('&', "&0" + player.getUniqueId().toString()));
@@ -300,7 +303,7 @@ public class Barrels extends JavaPlugin {
                     else {
                         player.sendMessage(ChatColor.RED + "The player is already whitelisted.");
                     }
-                } else return false;
+                }
                 return true;
             }
         });
