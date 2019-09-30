@@ -13,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
@@ -76,9 +77,13 @@ public class Barrel extends SlimefunItem {
 
             @Override
             public boolean canOpen(Block b, Player p) {
-                boolean protect = BlockStorage.getLocationInfo(b.getLocation(), "protected") == null || BlockStorage.getLocationInfo(b.getLocation(), "owner").equals(p.getUniqueId().toString()) || (BlockStorage.getLocationInfo(b.getLocation(), "whitelist") != null && BlockStorage.getLocationInfo(b.getLocation(), "whitelist").contains(p.getUniqueId().toString()));
+                boolean allowed = BlockStorage.getLocationInfo(b.getLocation(), "protected") == null || BlockStorage.getLocationInfo(b.getLocation(), "owner").equals(p.getUniqueId().toString()) || (BlockStorage.getLocationInfo(b.getLocation(), "whitelist") != null && BlockStorage.getLocationInfo(b.getLocation(), "whitelist").contains(p.getUniqueId().toString()));
 
-                return p.hasPermission("slimefun.inventory.bypass") || protect;
+                if (!allowed && Barrels.config.getBoolean("options.respect-protections")) {
+                	allowed = CSCoreLib.getLib().getProtectionManager().canAccessChest(p.getUniqueId(), b, true);
+                }
+                
+                return p.hasPermission("slimefun.inventory.bypass") || allowed;
             }
 
             @Override

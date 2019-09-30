@@ -3,3 +3,4 @@ options:
   displayItem: true
   plastic-recipe: true
   item-format: '&9<storedAmount>x &8(&e<storedPercentage>%&8)'
+  respect-protections: false
