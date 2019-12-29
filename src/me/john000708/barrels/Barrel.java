@@ -1,8 +1,12 @@
 package me.john000708.barrels;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import me.mrCookieSlime.Slimefun.Setup.SlimefunManager;
+import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -82,16 +86,35 @@ public class Barrel extends SlimefunItem {
             }
 
             @Override
-            public int[] getSlotsAccessedByItemTransport(ItemTransportFlow itemTransportFlow) {
+            public int[] getSlotsAccessedByItemTransport(ItemTransportFlow flow) {
                 return new int[0];
             }
 
             @Override
-            public int[] getSlotsAccessedByItemTransport(BlockMenu menu, ItemTransportFlow flow, ItemStack item) {
+            public int[] getSlotsAccessedByItemTransport(DirtyChestMenu menu, ItemTransportFlow flow, ItemStack item) {
                 if (flow == ItemTransportFlow.INSERT) {
-                    if (BlockStorage.getLocationInfo(menu.getLocation(), "storedItems") != null)
-                        return isSimilar(item, menu.getItemInSlot(22)) ? getInputSlots() : new int[0];
-                    else return getInputSlots();
+
+                    List<Integer> slots = new ArrayList<>();
+
+                    for (int slot : getInputSlots()) {
+                        if (SlimefunManager.isItemSimilar(menu.getItemInSlot(slot), item, true)) {
+                            slots.add(slot);
+                        }
+                    }
+                    if (slots.isEmpty()) {
+                        return getInputSlots();
+                    }
+                    else {
+                        Collections.sort(slots, compareSlots(menu));
+                        int[] array = new int[slots.size()];
+
+                        for (int i = 0; i < slots.size(); i++) {
+                            array[i] = slots.get(i);
+                        }
+
+                        return array;
+                    }
+
                 } 
                 else return getOutputSlots();
             }
@@ -353,6 +376,10 @@ public class Barrel extends SlimefunItem {
         }
 
         inventory.replaceExistingItem(4, getCapacityItem(b), false);
+    }
+
+    private Comparator<Integer> compareSlots(DirtyChestMenu menu) {
+        return (slot1, slot2) -> menu.getItemInSlot(slot1).getAmount() - menu.getItemInSlot(slot2).getAmount();
     }
     
     private void constructMenu(final BlockMenuPreset preset) {

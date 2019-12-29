@@ -4,7 +4,7 @@
 
   	<groupId>me.john000708</groupId>
   	<artifactId>Barrels</artifactId>
-  	<version>1.14</version>
+  	<version>1.15</version>
   
   	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -96,25 +96,23 @@
         <dependency>
            	<groupId>org.bukkit</groupId>
            	<artifactId>bukkit</artifactId>
-            <version>1.14.4-R0.1-SNAPSHOT</version>
+            <version>1.15-R0.1-SNAPSHOT</version>
   			<scope>provided</scope>
         </dependency>
         <dependency>
 	        <groupId>com.github.TheBusyBiscuit</groupId>
 	        <artifactId>CS-CoreLib</artifactId>
-	        <version>v1.6.1</version>
-  			<scope>provided</scope>
+	        <version>ec5b4c24e3</version>
 	    </dependency>
         <dependency>
 	    	<groupId>com.github.TheBusyBiscuit</groupId>
 	   		<artifactId>Slimefun4</artifactId>
-	   		<version>3400746c34</version>
-  			<scope>provided</scope>
+	   		<version>8b3d1fedcb</version>
 	    </dependency>
         <dependency>
   			<groupId>com.github.thebusybiscuit</groupId>
   			<artifactId>CS-CoreLib2</artifactId>
-  			<version>0.3.7</version>
+  			<version>0.4.1</version>
   			<scope>compile</scope>
 		</dependency>
 		<dependency>
