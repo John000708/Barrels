@@ -103,11 +103,13 @@
 	        <groupId>com.github.TheBusyBiscuit</groupId>
 	        <artifactId>CS-CoreLib</artifactId>
 	        <version>ec5b4c24e3</version>
+			<scope>provided</scope>
 	    </dependency>
         <dependency>
 	    	<groupId>com.github.TheBusyBiscuit</groupId>
 	   		<artifactId>Slimefun4</artifactId>
 	   		<version>8b3d1fedcb</version>
+			<scope>provided</scope>
 	    </dependency>
         <dependency>
   			<groupId>com.github.thebusybiscuit</groupId>
