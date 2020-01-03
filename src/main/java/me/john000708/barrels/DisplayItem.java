@@ -10,9 +10,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 /**
  * Created by John on 10.05.2016.
@@ -27,14 +27,14 @@ public class DisplayItem {
             return;
         }
 
-    	ItemStack stack = new CustomItem(new ItemStack(Material.BARRIER), 1);
+    	ItemStack stack = new ItemStack(Material.BARRIER, 1);
     	String nametag = ChatColor.translateAlternateColorCodes('&', "&cEmpty");
 
     	BlockMenu menu = BlockStorage.getInventory(b);
     	if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") != null) {
             int storedItems = Integer.valueOf(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
             stack = menu.getItemInSlot(22).clone();
-            nametag = ChatColor.translateAlternateColorCodes('&', Barrels.config.getString("options.item-format"));
+            nametag = ChatColor.translateAlternateColorCodes('&', Barrels.instance.config.getString("options.item-format"));
             nametag = nametag.replace("<storedAmount>", String.valueOf(storedItems));
             nametag = nametag.replace("<storedPercentage>", String.valueOf(Math.round((float) storedItems / (float) capacity * 100.0F)));
             nametag = nametag.replace("<storedItem>", stack.getItemMeta().getDisplayName());
@@ -44,7 +44,7 @@ public class DisplayItem {
         if (entity == null) {
         	entity = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), new CustomItem(stack, ITEM_DATA + System.nanoTime()));
         	entity.setVelocity(new Vector(0, 0.1, 0));
-            entity.setMetadata("no_pickup", new FixedMetadataValue(Barrels.plugin, "barrel"));
+            entity.setMetadata("no_pickup", new FixedMetadataValue(Barrels.instance, "barrel"));
             entity.setCustomNameVisible(true);
         }
         else {

@@ -4,6 +4,6 @@ author: John000708
 version: ${project.version}
 
 main: me.john000708.barrels.Barrels
-api-version: 1.13
+api-version: 1.14
 
-depend: [CS-CoreLib, Slimefun]
+depend: [Slimefun]

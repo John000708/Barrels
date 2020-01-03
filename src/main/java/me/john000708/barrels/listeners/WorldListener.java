@@ -13,8 +13,8 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
  */
 public class WorldListener implements Listener {
 	
-    public WorldListener() {
-        Bukkit.getPluginManager().registerEvents(this, Barrels.plugin);
+    public WorldListener(Barrels plugin) {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler

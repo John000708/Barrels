@@ -16,8 +16,8 @@ public class DisplayListener implements Listener {
 	
 	private final String lore = ChatColor.translateAlternateColorCodes('&', "&6&lB4R3L - &eITEM");
 	
-    public DisplayListener() {
-        Bukkit.getPluginManager().registerEvents(this, Barrels.plugin);
+    public DisplayListener(Barrels plugin) {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
