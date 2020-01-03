@@ -28,10 +28,10 @@ public class IDCard extends SimpleSlimefunItem<ItemInteractionHandler> {
 				Block clickedBlock = e.getClickedBlock();
 				
                 ItemMeta meta = item.getItemMeta();
-                if (!meta.hasLore()) return false;
+                if (!meta.hasLore()) return true;
                 
                 List<String> lore = item.getItemMeta().getLore();
-                if (lore.size() != 2) return false;
+                if (lore.size() != 2) return true;
 
                 if (lore.get(0).equals("")) {
                     lore.set(0, ChatColor.translateAlternateColorCodes('&', "&0" + p.getUniqueId().toString()));
