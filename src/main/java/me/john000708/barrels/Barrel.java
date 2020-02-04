@@ -90,8 +90,7 @@ public class Barrel extends SlimefunItem {
             public int[] getSlotsAccessedByItemTransport(DirtyChestMenu menu, ItemTransportFlow flow, ItemStack item) {
             	return getSlotsAccessedByItemTransport((BlockMenu) menu, flow, item);
             }
-
-            @Override
+            
             public int[] getSlotsAccessedByItemTransport(BlockMenu menu, ItemTransportFlow flow, ItemStack item) {
                 if (flow == ItemTransportFlow.INSERT) {
                     if (BlockStorage.getLocationInfo(menu.getLocation(), "storedItems") != null)
