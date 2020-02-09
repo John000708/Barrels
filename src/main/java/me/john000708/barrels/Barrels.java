@@ -1,6 +1,7 @@
 package me.john000708.barrels;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,7 +15,6 @@ import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.BukkitUpdater;
@@ -38,9 +38,6 @@ public class Barrels extends JavaPlugin {
     public void onEnable() {
     	instance = this;
         config = new Config(this);
-        
-        // Setting up bStats
-        new Metrics(this);
 
 		// Setting up the Auto-Updater
 		Updater updater;
@@ -74,7 +71,7 @@ public class Barrels extends JavaPlugin {
     }
     
     private void setup() {
-        Category barrelCat = new Category(new CustomItem(Material.OAK_LOG, "&aBarrels", "", "&a> Click to open"), 2);
+        Category barrelCat = new Category(new NamespacedKey(this, "barrels"), new CustomItem(Material.OAK_LOG, "&aBarrels", "", "&a> Click to open"), 2);
 
         SlimefunItemStack smallBarrel = new SlimefunItemStack("BARREL_SMALL", Material.OAK_LOG, "&9Barrel &7- &eSmall", "", "&8\u21E8 &7Capacity: 64 Stacks");
         SlimefunItemStack mediumBarrel = new SlimefunItemStack("BARREL_MEDIUM", Material.SPRUCE_LOG, "&9Barrel &7- &eMedium", "", "&8\u21E8 &7Capacity: 128 Stacks");
