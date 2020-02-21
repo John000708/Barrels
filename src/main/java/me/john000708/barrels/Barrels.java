@@ -6,6 +6,8 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import me.john000708.barrels.block.Barrel;
 import me.john000708.barrels.items.BarrelModule;
 import me.john000708.barrels.items.IDCard;
 import me.john000708.barrels.listeners.DisplayListener;
@@ -24,20 +26,18 @@ import me.mrCookieSlime.Slimefun.cscorelib2.updater.Updater;
 /**
  * Created by John on 06.05.2016.
  */
-public class Barrels extends JavaPlugin {
+public class Barrels extends JavaPlugin implements SlimefunAddon {
 	
-	public static Barrels instance;
-    public static boolean displayItem;
-
-    public Config config;
-
-    //Can be private.
-    private boolean plastic;
+	private static Barrels instance;
+    
+    private boolean requirePlastic;
+    private boolean displayItem;
+    private String itemFormat;
 
     @Override
     public void onEnable() {
     	instance = this;
-        config = new Config(this);
+        Config config = new Config(this);
 
 		// Setting up the Auto-Updater
 		Updater updater;
@@ -59,7 +59,8 @@ public class Barrels extends JavaPlugin {
         new WorldListener(this);
 
         displayItem = config.getBoolean("options.displayItem");
-        plastic = config.getBoolean("options.plastic-recipe");
+        requirePlastic = config.getBoolean("options.plastic-recipe");
+        itemFormat = config.getString("options.item-format");
         
         setup();
         getLogger().info("Barrels v" + getDescription().getVersion() + " has been enabled!");
@@ -88,44 +89,44 @@ public class Barrels extends JavaPlugin {
         SlimefunItemStack structUpgrade3 = new SlimefunItemStack("STRUCT_UPGRADE_3", Material.ITEM_FRAME, "&9Structural Upgrade &7- &eIII", "&bBig &8\u21E8 &bLarge");
 
         new Barrel(barrelCat, smallBarrel, RecipeType.ENHANCED_CRAFTING_TABLE, 
-        new ItemStack[] {new ItemStack(Material.OAK_SLAB), plastic ? SlimefunItems.PLASTIC_SHEET : new ItemStack(Material.CAULDRON), new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), new ItemStack(Material.CHEST), new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), SlimefunItems.GILDED_IRON, new ItemStack(Material.OAK_SLAB)}, 4096) {
+        new ItemStack[] {new ItemStack(Material.OAK_SLAB), requirePlastic ? SlimefunItems.PLASTIC_SHEET : new ItemStack(Material.CAULDRON), new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), new ItemStack(Material.CHEST), new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), SlimefunItems.GILDED_IRON, new ItemStack(Material.OAK_SLAB)}, 4096) {
 
             @Override
             public String getInventoryTitle() {
                 return "&9Barrel &7- &eSmall";
             }
 
-        }.register();
+        }.register(this);
 
         new Barrel(barrelCat, mediumBarrel, RecipeType.ENHANCED_CRAFTING_TABLE, 
-        new ItemStack[] {new ItemStack(Material.OAK_SLAB), plastic ? SlimefunItems.PLASTIC_SHEET : new ItemStack(Material.CAULDRON), new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), smallBarrel, new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), SlimefunItems.GILDED_IRON, new ItemStack(Material.OAK_SLAB)}, 8192) {
+        new ItemStack[] {new ItemStack(Material.OAK_SLAB), requirePlastic ? SlimefunItems.PLASTIC_SHEET : new ItemStack(Material.CAULDRON), new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), smallBarrel, new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), SlimefunItems.GILDED_IRON, new ItemStack(Material.OAK_SLAB)}, 8192) {
 
             @Override
             public String getInventoryTitle() {
                 return "&9Barrel &7- &eMedium";
             }
 
-        }.register();
+        }.register(this);
 
         new Barrel(barrelCat, bigBarrel, RecipeType.ENHANCED_CRAFTING_TABLE, 
-        new ItemStack[] {new ItemStack(Material.OAK_SLAB), plastic ? SlimefunItems.PLASTIC_SHEET : new ItemStack(Material.CAULDRON), new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), mediumBarrel, new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), SlimefunItems.GILDED_IRON, new ItemStack(Material.OAK_SLAB)}, 16384) {
+        new ItemStack[] {new ItemStack(Material.OAK_SLAB), requirePlastic ? SlimefunItems.PLASTIC_SHEET : new ItemStack(Material.CAULDRON), new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), mediumBarrel, new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), SlimefunItems.GILDED_IRON, new ItemStack(Material.OAK_SLAB)}, 16384) {
 
             @Override
             public String getInventoryTitle() {
                 return "&9Barrel &7- &eBig";
             }
 
-        }.register();
+        }.register(this);
 
         new Barrel(barrelCat, largeBarrel, RecipeType.ENHANCED_CRAFTING_TABLE, 
-        new ItemStack[] {new ItemStack(Material.OAK_SLAB), plastic ? SlimefunItems.PLASTIC_SHEET : new ItemStack(Material.CAULDRON), new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), bigBarrel, new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), SlimefunItems.GILDED_IRON, new ItemStack(Material.OAK_SLAB)}, 32768) {
+        new ItemStack[] {new ItemStack(Material.OAK_SLAB), requirePlastic ? SlimefunItems.PLASTIC_SHEET : new ItemStack(Material.CAULDRON), new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), bigBarrel, new ItemStack(Material.OAK_SLAB), new ItemStack(Material.OAK_SLAB), SlimefunItems.GILDED_IRON, new ItemStack(Material.OAK_SLAB)}, 32768) {
 
             @Override
             public String getInventoryTitle() {
                 return "&9Barrel &7- &eLarge";
             }
 
-        }.register();
+        }.register(this);
 
         new Barrel(barrelCat, deepStorageUnit, RecipeType.ENHANCED_CRAFTING_TABLE, 
         new ItemStack[] {SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.ENDER_CHEST), SlimefunItems.REINFORCED_PLATE, SlimefunItems.PLASTIC_SHEET, largeBarrel, SlimefunItems.PLASTIC_SHEET, SlimefunItems.REINFORCED_PLATE, SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.REINFORCED_PLATE}, 1048576) {
@@ -135,7 +136,7 @@ public class Barrels extends JavaPlugin {
                 return "&3Deep Storage Unit";
             }
 
-        }.register();
+        }.register(this);
         
         new BarrelModule(barrelCat, explosionModule, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {new ItemStack(Material.TNT), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.TNT), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.TNT), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.TNT)}) {
@@ -150,7 +151,7 @@ public class Barrels extends JavaPlugin {
         		return true;
         	}
         	
-        }.register();
+        }.register(this);
 
         new BarrelModule(barrelCat, structUpgrade1, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, mediumBarrel, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT}) {
@@ -167,7 +168,7 @@ public class Barrels extends JavaPlugin {
                 return true;
         	}
         	
-        }.register();
+        }.register(this);
 
         new BarrelModule(barrelCat, structUpgrade2, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, bigBarrel, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT}) {
@@ -184,7 +185,7 @@ public class Barrels extends JavaPlugin {
                 return true;
         	}
         	
-        }.register();
+        }.register(this);
 
         new BarrelModule(barrelCat, structUpgrade3, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, largeBarrel, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.LEAD_INGOT}) {
@@ -201,7 +202,7 @@ public class Barrels extends JavaPlugin {
                 return true;
         	}
         	
-        }.register();
+        }.register(this);
 
         new BarrelModule(barrelCat, biometricProtectionModule, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {new ItemStack(Material.REDSTONE), new ItemStack(Material.DIAMOND), new ItemStack(Material.REDSTONE), new ItemStack(Material.DIAMOND), new ItemStack(Material.PAPER), new ItemStack(Material.DIAMOND), new ItemStack(Material.REDSTONE), new ItemStack(Material.DIAMOND), new ItemStack(Material.REDSTONE)}) {
@@ -216,10 +217,32 @@ public class Barrels extends JavaPlugin {
                 return true;
         	}
         	
-        }.register();
+        }.register(this);
 
         new IDCard(barrelCat, idCard, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.PAPER), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.REDSTONE), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.REDSTONE)})
-        .register();
+        .register(this);
     }
+
+	@Override
+	public JavaPlugin getJavaPlugin() {
+		return this;
+	}
+
+	@Override
+	public String getBugTrackerURL() {
+		return "https://github.com/John000708/Barrels/issues";
+	}
+
+	public static Barrels getInstance() {
+		return instance;
+	}
+
+	public static String getItemFormat() {
+		return instance.itemFormat;
+	}
+
+	public static boolean displayItem() {
+		return instance.displayItem;
+	}
 }

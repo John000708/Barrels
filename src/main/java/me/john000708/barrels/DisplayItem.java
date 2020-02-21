@@ -1,5 +1,7 @@
 package me.john000708.barrels;
 
+import java.util.Optional;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,46 +33,49 @@ public class DisplayItem {
     	String nametag = ChatColor.translateAlternateColorCodes('&', "&cEmpty");
 
     	BlockMenu menu = BlockStorage.getInventory(b);
+    	
     	if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") != null) {
             int storedItems = Integer.valueOf(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
             stack = menu.getItemInSlot(22).clone();
-            nametag = ChatColor.translateAlternateColorCodes('&', Barrels.instance.config.getString("options.item-format"));
+            nametag = ChatColor.translateAlternateColorCodes('&', Barrels.getItemFormat());
             nametag = nametag.replace("<storedAmount>", String.valueOf(storedItems));
             nametag = nametag.replace("<storedPercentage>", String.valueOf(Math.round((float) storedItems / (float) capacity * 100.0F)));
             nametag = nametag.replace("<storedItem>", stack.getItemMeta().getDisplayName());
         }
 
-        Item entity = getEntity(b);
-        if (entity == null) {
-        	entity = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), new CustomItem(stack, ITEM_DATA + System.nanoTime()));
-        	entity.setVelocity(new Vector(0, 0.1, 0));
-            entity.setMetadata("no_pickup", new FixedMetadataValue(Barrels.instance, "barrel"));
-            entity.setCustomNameVisible(true);
+        Optional<Item> entity = getEntity(b);
+        
+        if (!entity.isPresent()) {
+        	Item item = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), new CustomItem(stack, ITEM_DATA + System.nanoTime()));
+        	item.setVelocity(new Vector(0, 0.1, 0));
+        	item.setMetadata("no_pickup", new FixedMetadataValue(Barrels.getInstance(), "barrel"));
+        	item.setCustomNameVisible(true);
+        	item.setCustomName(nametag);
+        	item.setInvulnerable(true);
         }
         else {
-        	entity.setItemStack(new CustomItem(stack, ITEM_DATA + System.nanoTime()));
+        	Item item = entity.get();
+        	item.setItemStack(new CustomItem(stack, ITEM_DATA + System.nanoTime()));
+        	item.setCustomName(nametag);
+        	item.setInvulnerable(true);
         }
-        
-        entity.setCustomName(nametag);
-        entity.setInvulnerable(true);
     }
 
     public static void removeDisplayItem(Block b) {
-        for (Entity n : b.getChunk().getEntities()) {
-            if (n instanceof Item) {
-                if (b.getLocation().add(0.5, 1.2, 0.5).distanceSquared(n.getLocation()) < 1D && ((Item) n).getItemStack().hasItemMeta() && ((Item) n).getItemStack().getItemMeta().getDisplayName().startsWith(ITEM_DATA))
-                    n.remove();
-            }
-        }
+        getEntity(b).ifPresent(Item::remove);
     }
 
-    private static Item getEntity(Block b) {
+    private static Optional<Item> getEntity(Block b) {
     	for (Entity n : b.getChunk().getEntities()) {
-            if (n instanceof Item) {
-                if (b.getLocation().add(0.5, 1.2, 0.5).distanceSquared(n.getLocation()) < 1D && ((Item) n).getItemStack().hasItemMeta() && ((Item) n).getItemStack().getItemMeta().getDisplayName().startsWith(ITEM_DATA))
-                return (Item) n;
+            if (n instanceof Item && b.getLocation().add(0.5, 1.2, 0.5).distanceSquared(n.getLocation()) < 1D) {
+            	Item item = (Item) n;
+            	
+                if (item.getItemStack().hasItemMeta() && item.getItemStack().getItemMeta().getDisplayName().startsWith(ITEM_DATA)) {
+                	return Optional.of(item);
+                }
             }
         }
-    	return null;
+    	
+    	return Optional.empty();
     }
 }

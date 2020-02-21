@@ -1,4 +1,4 @@
-package me.john000708.barrels;
+package me.john000708.barrels.block;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +13,15 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
+import me.john000708.barrels.Barrels;
+import me.john000708.barrels.DisplayItem;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunBlockHandler;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.UnregisterReason;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -32,9 +34,9 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 /**
  * Created by John on 06.05.2016.
  */
-public class Barrel extends SlimefunItem {
+public abstract class Barrel extends SimpleSlimefunItem<BlockTicker> {
 
-	private static final String LORE_DATA = ChatColor.translateAlternateColorCodes('&', "&b&a&r&r&e&l");
+	protected static final String LORE_DATA = ChatColor.translateAlternateColorCodes('&', "&b&a&r&r&e&l");
 	
     private static final int[] border1 = {0, 1, 2, 9, 11, 18, 19, 20};
     private static final int[] border2 = {3, 5, 12, 13, 14, 21, 23};
@@ -43,7 +45,7 @@ public class Barrel extends SlimefunItem {
     private int capacity;
     private boolean allowDisplayItem;
 
-    protected Barrel(Category category, SlimefunItemStack item, RecipeType recipeType, final ItemStack[] recipe, int capacity) {
+    protected Barrel(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int capacity) {
         super(category, item, recipeType, recipe);
 
         this.capacity = capacity;
@@ -68,7 +70,7 @@ public class Barrel extends SlimefunItem {
                     menu.replaceExistingItem(22, new CustomItem(Material.BARRIER, "&7Empty"), false);
                 }
 
-                if (Barrels.displayItem) {
+                if (Barrels.displayItem()) {
                     allowDisplayItem = b.getRelative(BlockFace.UP).getType() == Material.AIR;
 
                     DisplayItem.updateDisplayItem(b, getCapacity(b), allowDisplayItem);
@@ -86,101 +88,27 @@ public class Barrel extends SlimefunItem {
             public int[] getSlotsAccessedByItemTransport(ItemTransportFlow itemTransportFlow) {
                 return new int[0];
             }
-            
+
+            @Override
             public int[] getSlotsAccessedByItemTransport(DirtyChestMenu menu, ItemTransportFlow flow, ItemStack item) {
-            	return getSlotsAccessedByItemTransport((BlockMenu) menu, flow, item);
-            }
-            
-            public int[] getSlotsAccessedByItemTransport(BlockMenu menu, ItemTransportFlow flow, ItemStack item) {
                 if (flow == ItemTransportFlow.INSERT) {
-                    if (BlockStorage.getLocationInfo(menu.getLocation(), "storedItems") != null)
-                        return isSimilar(item, menu.getItemInSlot(22)) ? getInputSlots() : new int[0];
+                    if (BlockStorage.getLocationInfo(((BlockMenu) menu).getLocation(), "storedItems") != null) {
+                    	return isSimilar(item, menu.getItemInSlot(22)) ? getInputSlots() : new int[0];
+                    }
                     else return getInputSlots();
                 } 
                 else return getOutputSlots();
             }
         };
 
-        registerBlockHandler(getID(), new SlimefunBlockHandler() {
-        	
-            @Override
-            public void onPlace(Player player, Block block, SlimefunItem slimefunItem) {
-                BlockStorage.addBlockInfo(block, "owner", player.getUniqueId().toString());
-                BlockStorage.addBlockInfo(block, "whitelist", " ");
-                // DONT DO ANYTHING - Inventory is not yet loaded
-            }
-
-            @Override
-            public boolean onBreak(Player player, Block b, SlimefunItem slimefunItem, UnregisterReason unregisterReason) {
-                if (unregisterReason.equals(UnregisterReason.EXPLODE)) {
-                    if (BlockStorage.getLocationInfo(b.getLocation(), "explosion") != null) 
-                    	return false;
-                } 
-                else if (unregisterReason.equals(UnregisterReason.PLAYER_BREAK)) {
-                    if (!BlockStorage.getLocationInfo(b.getLocation(), "owner").equals(player.getUniqueId().toString()))
-                        return false;
-                }
-
-                DisplayItem.removeDisplayItem(b);
-
-                BlockMenu inv = BlockStorage.getInventory(b);
-
-                if (BlockStorage.getLocationInfo(b.getLocation(), "explosion") != null)
-                    b.getWorld().dropItem(b.getLocation(), SlimefunItem.getByID("BARREL_EXPLOSION_MODULE").getItem());
-                if (BlockStorage.getLocationInfo(b.getLocation(), "STRUCT_1") != null)
-                    b.getWorld().dropItem(b.getLocation(), SlimefunItem.getByID("STRUCT_UPGRADE_1").getItem());
-                if (BlockStorage.getLocationInfo(b.getLocation(), "STRUCT_2") != null)
-                    b.getWorld().dropItem(b.getLocation(), SlimefunItem.getByID("STRUCT_UPGRADE_2").getItem());
-                if (BlockStorage.getLocationInfo(b.getLocation(), "STRUCT_3") != null)
-                    b.getWorld().dropItem(b.getLocation(), SlimefunItem.getByID("STRUCT_UPGRADE_3").getItem());
-                if (BlockStorage.getLocationInfo(b.getLocation(), "protected") != null)
-                    b.getWorld().dropItem(b.getLocation(), SlimefunItem.getByID("BARREL_BIO_PROTECTION").getItem());
-
-                if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") == null) return true;
-                //There's no need to box the integer.
-                int storedAmount = Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
-
-                ItemStack item = inv.getItemInSlot(22);
-                ItemMeta meta = item.getItemMeta();
-
-                List<String> lore = meta.getLore();
-                for (int i = 0; i <= lore.size() - 1; i++) {
-                    if (lore.get(i).equals(LORE_DATA)) {
-                        lore.remove(i);
-                        meta.setLore(lore);
-                        item.setItemMeta(meta);
-                        break;
-                    }
-                }
-
-                while (storedAmount > 0) {
-                    int amount = item.getMaxStackSize();
-
-                    if (storedAmount > amount) {
-                        storedAmount -= amount;
-                    } 
-                    else {
-                        amount = storedAmount;
-                        storedAmount = 0;
-                    }
-
-                    b.getWorld().dropItem(b.getLocation(), new CustomItem(item, amount));
-                }
-
-                if (inv.getItemInSlot(getInputSlots()[0]) != null)
-                    b.getWorld().dropItem(b.getLocation(), inv.getItemInSlot(getInputSlots()[0]));
-
-                if (inv.getItemInSlot(getOutputSlots()[0]) != null)
-                    b.getWorld().dropItem(b.getLocation(), inv.getItemInSlot(getOutputSlots()[0]));
-
-                return true;
-            }
-        });
+        registerBlockHandler(getID(), new BarrelsBlockHandler(this));
     }
+    
+    public abstract String getInventoryTitle();
 
-    @Override
-    public void register(boolean slimefun) {
-        addItemHandler(new BlockTicker() {
+	@Override
+	public BlockTicker getItemHandler() {
+		return new BlockTicker() {
 
             @Override
             public boolean isSynchronized() {
@@ -191,19 +119,13 @@ public class Barrel extends SlimefunItem {
             public void tick(Block block, SlimefunItem slimefunItem, Config config) {
                 updateBarrel(block);
 
-                if (Barrels.displayItem) {
+                if (Barrels.displayItem()) {
                     allowDisplayItem = block.getRelative(BlockFace.UP).getType() == Material.AIR;
                     DisplayItem.updateDisplayItem(block, getCapacity(block), allowDisplayItem);
                 }
             }
-        });
-
-        super.register(false);
-    }
-
-    public String getInventoryTitle() {
-        return "&6Barrel";
-    }
+        };
+	}
 
     public int getCapacity(Block b) {
         if (BlockStorage.getLocationInfo(b.getLocation(), "capacity") == null) {
@@ -358,7 +280,7 @@ public class Barrel extends SlimefunItem {
         inventory.replaceExistingItem(4, getCapacityItem(b), false);
     }
     
-    private void constructMenu(final BlockMenuPreset preset) {
+    private void constructMenu(BlockMenuPreset preset) {
         for (int i : border1) {
             preset.addItem(i, new CustomItem(Material.CYAN_STAINED_GLASS_PANE, " "), (p, j, stack, action) -> false);
         }
@@ -371,9 +293,8 @@ public class Barrel extends SlimefunItem {
             preset.addItem(i, new CustomItem(Material.ORANGE_STAINED_GLASS_PANE, " "), (p, j, stack, action) -> false);
         }
 
-        preset.addMenuClickHandler(4, (p, i, stack, action) -> false);
-
-        preset.addMenuClickHandler(22, (p, i, stack, action) -> false);
+        preset.addMenuClickHandler(4, ChestMenuUtils.getEmptyClickHandler());
+        preset.addMenuClickHandler(22, ChestMenuUtils.getEmptyClickHandler());
     }
 
     private boolean isSimilar(ItemStack i1, ItemStack i2) {
