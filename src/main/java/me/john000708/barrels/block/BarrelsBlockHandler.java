@@ -40,7 +40,8 @@ class BarrelsBlockHandler implements SlimefunBlockHandler {
         } 
         else if (unregisterReason.equals(UnregisterReason.PLAYER_BREAK)) {
         	// Only the Owner may break this Barrel
-            return BlockStorage.getLocationInfo(b.getLocation(), "owner").equals(player.getUniqueId().toString());
+            if(!BlockStorage.getLocationInfo(b.getLocation(), "owner").equals(player.getUniqueId().toString()))
+                return false;
         }
 
         DisplayItem.removeDisplayItem(b);
@@ -69,13 +70,18 @@ class BarrelsBlockHandler implements SlimefunBlockHandler {
         ItemStack item = inv.getItemInSlot(22);
         ItemMeta meta = item.getItemMeta();
 
-        List<String> lore = meta.getLore();
-        for (int i = 0; i <= lore.size() - 1; i++) {
-            if (lore.get(i).equals(Barrel.LORE_DATA)) {
-                lore.remove(i);
-                meta.setLore(lore);
-                item.setItemMeta(meta);
-                break;
+        List<String> lore;
+        if (meta != null) {
+            lore = meta.getLore();
+            if (lore != null) {
+                for (int i = 0; i <= lore.size() - 1; i++) {
+                    if (lore.get(i).equals(Barrel.LORE_DATA)) {
+                        lore.remove(i);
+                        meta.setLore(lore);
+                        item.setItemMeta(meta);
+                        break;
+                    }
+                }
             }
         }
 
