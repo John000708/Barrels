@@ -5,23 +5,26 @@ import java.util.Optional;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 
 /**
  * Created by John on 10.05.2016.
  */
-public class DisplayItem {
-	
-	private static final String ITEM_DATA = ChatColor.translateAlternateColorCodes('&', "&6&lB4R3L - &eITEM");
+public final class DisplayItem {
+
+    public static final NamespacedKey NAMESPACED_KEY = new NamespacedKey(Barrels.getInstance(), "display_item");
+
+    private DisplayItem() {}
 
     public static void updateDisplayItem(Block b, int capacity, boolean allow) {
         if (!allow) {
@@ -29,13 +32,12 @@ public class DisplayItem {
             return;
         }
 
-    	ItemStack stack = new ItemStack(Material.BARRIER, 1);
-    	String nametag = ChatColor.translateAlternateColorCodes('&', "&cEmpty");
+        ItemStack stack = new ItemStack(Material.BARRIER, 1);
+        String nametag = ChatColor.RED + "Empty";
+        BlockMenu menu = BlockStorage.getInventory(b);
 
-    	BlockMenu menu = BlockStorage.getInventory(b);
-    	
-    	if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") != null) {
-            int storedItems = Integer.valueOf(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
+        if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") != null) {
+            int storedItems = Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
             stack = menu.getItemInSlot(22).clone();
             nametag = ChatColor.translateAlternateColorCodes('&', Barrels.getItemFormat());
             nametag = nametag.replace("<storedAmount>", String.valueOf(storedItems));
@@ -44,20 +46,22 @@ public class DisplayItem {
         }
 
         Optional<Item> entity = getEntity(b);
-        
+
         if (!entity.isPresent()) {
-        	Item item = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), new CustomItem(stack, ITEM_DATA + System.nanoTime()));
-        	item.setVelocity(new Vector(0, 0.1, 0));
-        	item.setMetadata("no_pickup", new FixedMetadataValue(Barrels.getInstance(), "barrel"));
-        	item.setCustomNameVisible(true);
-        	item.setCustomName(nametag);
-        	item.setInvulnerable(true);
+            Item item = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), stack);
+            item.setVelocity(new Vector(0, 0.1, 0));
+            item.setCustomNameVisible(true);
+            item.setCustomName(nametag);
+            item.setInvulnerable(true);
+
+            SlimefunUtils.markAsNoPickup(item, "barrel");
+            PersistentDataAPI.setString(item, NAMESPACED_KEY, toString(b));
         }
         else {
-        	Item item = entity.get();
-        	item.setItemStack(new CustomItem(stack, ITEM_DATA + System.nanoTime()));
-        	item.setCustomName(nametag);
-        	item.setInvulnerable(true);
+            Item item = entity.get();
+            item.setItemStack(stack);
+            item.setCustomName(nametag);
+            item.setInvulnerable(true);
         }
     }
 
@@ -66,16 +70,22 @@ public class DisplayItem {
     }
 
     private static Optional<Item> getEntity(Block b) {
-    	for (Entity n : b.getChunk().getEntities()) {
-            if (n instanceof Item && b.getLocation().add(0.5, 1.2, 0.5).distanceSquared(n.getLocation()) < 1D) {
-            	Item item = (Item) n;
-            	
-                if (item.getItemStack().hasItemMeta() && item.getItemStack().getItemMeta().getDisplayName().startsWith(ITEM_DATA)) {
-                	return Optional.of(item);
+        for (Entity n : b.getChunk().getEntities()) {
+            if (n instanceof Item && b.getLocation().add(0.5, 1.2, 0.5).distanceSquared(n.getLocation()) < 1.25) {
+                Item item = (Item) n;
+
+                Optional<String> data = PersistentDataAPI.getOptionalString(item, NAMESPACED_KEY);
+
+                if (data.isPresent() && data.get().equals(toString(b))) {
+                    return Optional.of(item);
                 }
             }
         }
-    	
-    	return Optional.empty();
+
+        return Optional.empty();
+    }
+
+    private static String toString(Block b) {
+        return b.getWorld().getUID().toString() + " | " + b.getX() + ", " + b.getY() + ", " + b.getZ();
     }
 }
