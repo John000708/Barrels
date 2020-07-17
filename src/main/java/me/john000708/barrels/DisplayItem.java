@@ -66,7 +66,10 @@ public final class DisplayItem {
     }
 
     public static void removeDisplayItem(Block b) {
-        getEntity(b).ifPresent(Item::remove);
+        getEntity(b).ifPresent(item -> {
+		item.remove();
+		item.removeMetadata("no_pickup", Barrels.getInstance());
+        });
     }
 
     private static Optional<Item> getEntity(Block b) {
