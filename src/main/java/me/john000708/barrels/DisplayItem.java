@@ -60,7 +60,7 @@ public final class DisplayItem {
         }
         item.setCustomName(nametag);
         item.setInvulnerable(true);
-        if (!hasNoPickupFlag(item)) {
+        if (!SlimefunUtils.hasNoPickupFlag(item)) {
             SlimefunUtils.markAsNoPickup(item, "barrel");	
         }
     }
