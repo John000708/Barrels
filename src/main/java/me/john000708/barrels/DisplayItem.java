@@ -39,6 +39,7 @@ public final class DisplayItem {
         if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") != null) {
             int storedItems = Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
             stack = menu.getItemInSlot(22).clone();
+            stack.setAmount(1);
             nametag = ChatColor.translateAlternateColorCodes('&', Barrels.getItemFormat());
             nametag = nametag.replace("<storedAmount>", String.valueOf(storedItems));
             nametag = nametag.replace("<storedPercentage>", String.valueOf(Math.round((float) storedItems / (float) capacity * 100.0F)));
