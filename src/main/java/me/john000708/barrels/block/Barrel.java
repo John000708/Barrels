@@ -151,6 +151,7 @@ public abstract class Barrel extends SimpleSlimefunItem<BlockTicker> {
                 else if (inventory.getItemInSlot(22).getType() == Material.BARRIER) {
                     BlockStorage.addBlockInfo(b, "storedItems", String.valueOf(input.getAmount()));
 
+                    input.setAmount(input.getMaxStackSize());
                     inventory.replaceExistingItem(22, input, false);
                     inventory.replaceExistingItem(slot, new ItemStack(Material.AIR), false);
                     inventory.replaceExistingItem(4, getCapacityItem(b), false);
