@@ -51,17 +51,17 @@ public final class DisplayItem {
             Item item = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), stack);
             item.setVelocity(new Vector(0, 0.1, 0));
             item.setCustomNameVisible(true);
-            item.setCustomName(nametag);
-            item.setInvulnerable(true);
 
-            SlimefunUtils.markAsNoPickup(item, "barrel");
             PersistentDataAPI.setString(item, NAMESPACED_KEY, toString(b));
         }
         else {
             Item item = entity.get();
             item.setItemStack(stack);
-            item.setCustomName(nametag);
-            item.setInvulnerable(true);
+        }
+        item.setCustomName(nametag);
+        item.setInvulnerable(true);
+        if (!SlimefunUtils.hasNoPickupFlag(item)) {
+            SlimefunUtils.markAsNoPickup(item, "barrel");	
         }
     }
 
