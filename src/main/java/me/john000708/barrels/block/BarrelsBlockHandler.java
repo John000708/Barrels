@@ -37,7 +37,9 @@ class BarrelsBlockHandler implements SlimefunBlockHandler {
         }
         else if (unregisterReason.equals(UnregisterReason.PLAYER_BREAK)) {
             // Only the Owner may break this Barrel
-            return BlockStorage.getLocationInfo(b.getLocation(), "owner").equals(player.getUniqueId().toString());
+            if (!BlockStorage.getLocationInfo(b.getLocation(), "owner").equals(player.getUniqueId().toString())) {
+                return false;
+            }
         }
 
         DisplayItem.removeDisplayItem(b);
@@ -64,6 +66,14 @@ class BarrelsBlockHandler implements SlimefunBlockHandler {
             b.getWorld().dropItem(b.getLocation(), SlimefunItem.getByID("BARREL_BIO_PROTECTION").getItem());
         }
 
+        if (inv.getItemInSlot(barrel.getInputSlots()[0]) != null) {
+            b.getWorld().dropItem(b.getLocation(), inv.getItemInSlot(barrel.getInputSlots()[0]));
+        }
+
+        if (inv.getItemInSlot(barrel.getOutputSlots()[0]) != null) {
+            b.getWorld().dropItem(b.getLocation(), inv.getItemInSlot(barrel.getOutputSlots()[0]));
+        }
+
         if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") == null) {
             return true;
         }
@@ -84,14 +94,6 @@ class BarrelsBlockHandler implements SlimefunBlockHandler {
             }
 
             b.getWorld().dropItem(b.getLocation(), new CustomItem(item, amount));
-        }
-
-        if (inv.getItemInSlot(barrel.getInputSlots()[0]) != null) {
-            b.getWorld().dropItem(b.getLocation(), inv.getItemInSlot(barrel.getInputSlots()[0]));
-        }
-
-        if (inv.getItemInSlot(barrel.getOutputSlots()[0]) != null) {
-            b.getWorld().dropItem(b.getLocation(), inv.getItemInSlot(barrel.getOutputSlots()[0]));
         }
 
         return true;
