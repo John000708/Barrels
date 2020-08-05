@@ -47,29 +47,32 @@ public final class DisplayItem {
         }
 
         Optional<Item> entity = getEntity(b);
+        Item item;
 
         if (!entity.isPresent()) {
-            Item item = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), stack);
+            item = b.getWorld().dropItem(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.2D, b.getZ() + 0.5D), stack);
             item.setVelocity(new Vector(0, 0.1, 0));
             item.setCustomNameVisible(true);
 
             PersistentDataAPI.setString(item, NAMESPACED_KEY, toString(b));
         }
         else {
-            Item item = entity.get();
+            item = entity.get();
             item.setItemStack(stack);
         }
+
         item.setCustomName(nametag);
         item.setInvulnerable(true);
+
         if (!SlimefunUtils.hasNoPickupFlag(item)) {
-            SlimefunUtils.markAsNoPickup(item, "barrel");	
+            SlimefunUtils.markAsNoPickup(item, "barrel");
         }
     }
 
     public static void removeDisplayItem(Block b) {
         getEntity(b).ifPresent(item -> {
-		item.remove();
-		item.removeMetadata("no_pickup", Barrels.getInstance());
+            item.remove();
+            item.removeMetadata("no_pickup", Barrels.getInstance());
         });
     }
 
