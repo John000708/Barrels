@@ -1,5 +1,8 @@
 package me.john000708.barrels.block;
 
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +18,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 class BarrelsBlockHandler implements SlimefunBlockHandler {
 
     private final Barrel barrel;
+    boolean explosiveBreak;
 
     public BarrelsBlockHandler(Barrel barrel) {
         this.barrel = barrel;
@@ -32,6 +36,10 @@ class BarrelsBlockHandler implements SlimefunBlockHandler {
             // Only the Owner may break this Barrel
             if (!BlockStorage.getLocationInfo(b.getLocation(), "owner").equals(player.getUniqueId().toString())) {
                 return false;
+            }
+
+            if (SlimefunUtils.isItemSimilar(player.getInventory().getItemInMainHand(), SlimefunItems.EXPLOSIVE_PICKAXE, false)) {
+                explosiveBreak = true;
             }
         }
 
@@ -87,6 +95,12 @@ class BarrelsBlockHandler implements SlimefunBlockHandler {
             }
 
             b.getWorld().dropItem(b.getLocation(), new CustomItem(item, amount));
+        }
+
+        if (explosiveBreak) {
+            b.getWorld().dropItem(b.getLocation(), BlockStorage.check(b).getItem());
+            BlockStorage.clearBlockInfo(b);
+            b.setType(Material.AIR);
         }
 
         return true;
