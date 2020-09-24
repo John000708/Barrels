@@ -1,13 +1,16 @@
 package me.john000708.barrels.block;
 
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
+import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.john000708.barrels.Barrels;
 import me.john000708.barrels.DisplayItem;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -35,6 +38,20 @@ public abstract class Barrel extends SimpleSlimefunItem<BlockTicker> {
 
         new BarrelsMenuPreset(this);
         registerBlockHandler(getID(), new BarrelsBlockHandler(this));
+
+        addItemHandler(onPlace());
+    }
+
+    private ItemHandler onPlace() {
+        return new BlockPlaceHandler(false) {
+            @Override
+            public void onPlayerPlace(BlockPlaceEvent e) {
+                Block b = e.getBlock();
+                Player p = e.getPlayer();
+                BlockStorage.addBlockInfo(b, "owner", p.getUniqueId().toString());
+                BlockStorage.addBlockInfo(b, "whitelist", " ");
+            }
+        };
     }
 
     public abstract String getInventoryTitle();
@@ -128,7 +145,7 @@ public abstract class Barrel extends SimpleSlimefunItem<BlockTicker> {
             if (inventory.getItemInSlot(slot) != null) {
                 ItemStack input = inventory.getItemInSlot(slot);
 
-                if (SlimefunUtils.isItemSimilar(input, inventory.getItemInSlot(22), true, false)) {
+                if (input.getItemMeta().equals(inventory.getItemInSlot(22).getItemMeta())) {
                     if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") == null) {
                         BlockStorage.addBlockInfo(b, "storedItems", "1");
                     }
@@ -167,7 +184,8 @@ public abstract class Barrel extends SimpleSlimefunItem<BlockTicker> {
         ItemStack output = inventory.getItemInSlot(22).clone();
 
         if (inventory.getItemInSlot(getOutputSlots()[0]) != null && inventory.getItemInSlot(getOutputSlots()[0]).getType() != Material.AIR) {
-            if (!SlimefunUtils.isItemSimilar(inventory.getItemInSlot(getOutputSlots()[0]), output, true, false)) {
+            // This is used to prevent items with different enchants and potion types from merging
+            if (!inventory.getItemInSlot(getOutputSlots()[0]).getItemMeta().equals(output.getItemMeta())) {
                 return;
             }
 

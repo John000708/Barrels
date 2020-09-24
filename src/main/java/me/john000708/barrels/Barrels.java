@@ -39,10 +39,9 @@ public class Barrels extends JavaPlugin implements SlimefunAddon {
         Config config = new Config(this);
 
         // Setting up the Auto-Updater
-        Updater updater = new GitHubBuildsUpdater(this, getFile(), "John000708/Barrels/master");
 
-        if (config.getBoolean("options.auto-update")) {
-            updater.start();
+        if (getConfig().getBoolean("options.auto-update") && getDescription().getVersion().startsWith("DEV - ")) {
+            new GitHubBuildsUpdater(this, getFile(), "John000708/Barrels/master").start();
         }
 
         new DisplayListener(this);
