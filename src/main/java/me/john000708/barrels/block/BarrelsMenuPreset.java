@@ -25,8 +25,8 @@ class BarrelsMenuPreset extends BlockMenuPreset {
 
     private final Barrel barrel;
 
-    public BarrelsMenuPreset(Barrel barrel) {
-        super(barrel.getID(), barrel.getInventoryTitle());
+    public BarrelsMenuPreset(Barrel barrel, String title) {
+        super(barrel.getId(), title);
 
         this.barrel = barrel;
     }
@@ -39,13 +39,8 @@ class BarrelsMenuPreset extends BlockMenuPreset {
     @Override
     public void newInstance(BlockMenu menu, Block b) {
 
-        registerEvent((slot, prev, next) -> {
-            barrel.updateBarrel(b);
-            return next;
-        });
-
+        barrel.updateCapacityItem(menu, barrel.getCapacity(b), 0);
         if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") == null) {
-            menu.replaceExistingItem(4, new CustomItem(Material.BARRIER, "&7Empty"), false);
             menu.replaceExistingItem(22, new CustomItem(Material.BARRIER, "&7Empty"), false);
         }
 
@@ -87,16 +82,13 @@ class BarrelsMenuPreset extends BlockMenuPreset {
     @Override
     public int[] getSlotsAccessedByItemTransport(DirtyChestMenu menu, ItemTransportFlow flow, ItemStack item) {
         if (flow == ItemTransportFlow.INSERT) {
-            if (BlockStorage.getLocationInfo(((BlockMenu) menu).getLocation(), "storedItems") != null) {
-                if (SlimefunUtils.isItemSimilar(item, menu.getItemInSlot(22), true, false)) {
-                    return barrel.getInputSlots();
-                }
-                else {
-                    return new int[0];
-                }
+            if (BlockStorage.getLocationInfo(((BlockMenu)menu).getLocation(), "storedItems") == null ||
+                    barrel.getStoredItem(menu) == null ||
+                    SlimefunUtils.isItemSimilar(item, barrel.getStoredItem(menu), true, false)) {
+                return barrel.getInputSlots();
             }
             else {
-                return barrel.getInputSlots();
+                return new int[0];
             }
         }
         else {
