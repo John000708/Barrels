@@ -1,5 +1,6 @@
 package me.john000708.barrels.block;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -21,13 +22,6 @@ class BarrelsBlockHandler implements SlimefunBlockHandler {
     }
 
     @Override
-    public void onPlace(Player player, Block block, SlimefunItem slimefunItem) {
-        BlockStorage.addBlockInfo(block, "owner", player.getUniqueId().toString());
-        BlockStorage.addBlockInfo(block, "whitelist", " ");
-        // DONT DO ANYTHING - Inventory is not yet loaded
-    }
-
-    @Override
     public boolean onBreak(Player player, Block b, SlimefunItem slimefunItem, UnregisterReason unregisterReason) {
         if (unregisterReason.equals(UnregisterReason.EXPLODE)) {
             if (BlockStorage.getLocationInfo(b.getLocation(), "explosion") != null) {
@@ -37,7 +31,8 @@ class BarrelsBlockHandler implements SlimefunBlockHandler {
         }
         else if (unregisterReason.equals(UnregisterReason.PLAYER_BREAK)) {
             // Only the Owner may break this Barrel
-            if (!BlockStorage.getLocationInfo(b.getLocation(), "owner").equals(player.getUniqueId().toString())) {
+            String owner = BlockStorage.getLocationInfo(b.getLocation(), "owner");
+            if (owner != null && !owner.equals(player.getUniqueId().toString())) {
                 return false;
             }
         }
@@ -66,19 +61,14 @@ class BarrelsBlockHandler implements SlimefunBlockHandler {
             b.getWorld().dropItem(b.getLocation(), SlimefunItem.getByID("BARREL_BIO_PROTECTION").getItem());
         }
 
-        if (inv.getItemInSlot(barrel.getInputSlots()[0]) != null) {
-            b.getWorld().dropItem(b.getLocation(), inv.getItemInSlot(barrel.getInputSlots()[0]));
-        }
+        inv.dropItems(b.getLocation(), barrel.getInputSlots());
+        inv.dropItems(b.getLocation(), barrel.getOutputSlots());
 
-        if (inv.getItemInSlot(barrel.getOutputSlots()[0]) != null) {
-            b.getWorld().dropItem(b.getLocation(), inv.getItemInSlot(barrel.getOutputSlots()[0]));
-        }
-
-        if (BlockStorage.getLocationInfo(b.getLocation(), "storedItems") == null) {
+        String storedAmountString = BlockStorage.getLocationInfo(b.getLocation(), "storedItems");
+        if (storedAmountString == null) {
             return true;
         }
-        // There's no need to box the integer.
-        int storedAmount = Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "storedItems"));
+        int storedAmount = Integer.parseInt(storedAmountString);
 
         ItemStack item = inv.getItemInSlot(22);
 
@@ -95,6 +85,8 @@ class BarrelsBlockHandler implements SlimefunBlockHandler {
 
             b.getWorld().dropItem(b.getLocation(), new CustomItem(item, amount));
         }
+        BlockStorage.addBlockInfo(b, "storedItems", null);
+        inv.replaceExistingItem(22, new CustomItem(Material.BARRIER, "&7Empty"), false);
 
         return true;
     }
