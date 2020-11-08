@@ -48,14 +48,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.1-R0.1-SNAPSHOT</version>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         
         <dependency>
             <groupId>com.github.TheBusyBiscuit</groupId>
             <artifactId>CS-CoreLib</artifactId>
-            <version>6e17183656</version>
+            <version>e42a05d129</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -70,9 +70,9 @@
         </dependency>
         
         <dependency>
-            <groupId>com.github.TheBusyBiscuit</groupId>
+            <groupId>com.github.Slimefun</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>RC-14</version>
+            <version>RC-17</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
