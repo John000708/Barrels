@@ -1,5 +1,7 @@
 package me.john000708.barrels;
 
+import java.util.logging.Level;
+
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -54,6 +56,13 @@ public class Barrels extends JavaPlugin implements SlimefunAddon {
 
         setup();
         getLogger().info("Barrels v" + getDescription().getVersion() + " has been enabled!");
+
+        getLogger().log(Level.WARNING, "################################################");
+        getLogger().log(Level.WARNING, "# WARNING: Barrels by John000708 is not developed anymore.");
+        getLogger().log(Level.WARNING, "# Barrels will not receive any further updates and has become deprecated.");
+        getLogger().log(Level.WARNING, "# The plugin will not receive any further support, but you can still fork");
+        getLogger().log(Level.WARNING, "# it or make pull requests on GitHub: https://github.com/John000708/Barrels");
+        getLogger().log(Level.WARNING, "################################################");
     }
 
     @Override

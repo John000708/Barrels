@@ -4,8 +4,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.john000708.barrels.Barrels;
@@ -34,7 +36,17 @@ public abstract class Barrel extends SimpleSlimefunItem<BlockTicker> {
         this.capacity = capacity;
 
         new BarrelsMenuPreset(this);
-        registerBlockHandler(getID(), new BarrelsBlockHandler(this));
+        registerBlockHandler(getId(), new BarrelsBlockHandler(this));
+
+        addItemHandler(new BlockPlaceHandler(false) {
+
+            @Override
+            public void onPlayerPlace(BlockPlaceEvent e) {
+                Block block = e.getBlock();
+                BlockStorage.addBlockInfo(block, "owner", e.getPlayer().getUniqueId().toString());
+                BlockStorage.addBlockInfo(block, "whitelist", " ");
+            }
+        });
     }
 
     public abstract String getInventoryTitle();
@@ -88,14 +100,11 @@ public abstract class Barrel extends SimpleSlimefunItem<BlockTicker> {
 
         if (percentage < 25) {
             bar.append("&2");
-        }
-        else if (percentage < 50) {
+        } else if (percentage < 50) {
             bar.append("&a");
-        }
-        else if (percentage < 75) {
+        } else if (percentage < 75) {
             bar.append("&e");
-        }
-        else {
+        } else {
             bar.append("&c");
         }
 
@@ -140,15 +149,13 @@ public abstract class Barrel extends SimpleSlimefunItem<BlockTicker> {
                             BlockStorage.addBlockInfo(b, "storedItems", String.valueOf(getCapacity(b)));
                             inventory.replaceExistingItem(slot, InvUtils.decreaseItem(inventory.getItemInSlot(slot), getCapacity(b) - storedAmount), false);
                             inventory.replaceExistingItem(4, getCapacityItem(b), false);
-                        }
-                        else {
+                        } else {
                             BlockStorage.addBlockInfo(b, "storedItems", String.valueOf(storedAmount + input.getAmount()));
                             inventory.replaceExistingItem(slot, new ItemStack(Material.AIR), false);
                             inventory.replaceExistingItem(4, getCapacityItem(b), false);
                         }
                     }
-                }
-                else if (inventory.getItemInSlot(22).getType() == Material.BARRIER) {
+                } else if (inventory.getItemInSlot(22).getType() == Material.BARRIER) {
                     BlockStorage.addBlockInfo(b, "storedItems", String.valueOf(input.getAmount()));
 
                     input.setAmount(input.getMaxStackSize());
@@ -173,8 +180,7 @@ public abstract class Barrel extends SimpleSlimefunItem<BlockTicker> {
 
             int requested = output.getMaxStackSize() - inventory.getItemInSlot(getOutputSlots()[0]).getAmount();
             output.setAmount(Math.min(stored, requested));
-        }
-        else {
+        } else {
             output.setAmount(Math.min(stored, output.getMaxStackSize()));
         }
 

@@ -21,13 +21,6 @@ class BarrelsBlockHandler implements SlimefunBlockHandler {
     }
 
     @Override
-    public void onPlace(Player player, Block block, SlimefunItem slimefunItem) {
-        BlockStorage.addBlockInfo(block, "owner", player.getUniqueId().toString());
-        BlockStorage.addBlockInfo(block, "whitelist", " ");
-        // DONT DO ANYTHING - Inventory is not yet loaded
-    }
-
-    @Override
     public boolean onBreak(Player player, Block b, SlimefunItem slimefunItem, UnregisterReason unregisterReason) {
         if (unregisterReason.equals(UnregisterReason.EXPLODE)) {
             if (BlockStorage.getLocationInfo(b.getLocation(), "explosion") != null) {

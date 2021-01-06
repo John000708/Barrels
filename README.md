@@ -1,3 +1,5 @@
+## NO LONGER MAINTAINED.
+
 # Barrels
 A Slimefun Addon which replicates the popular barrels found in modpacks.
 
